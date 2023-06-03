@@ -1,13 +1,16 @@
-import Image from "next/image";
-import logo from "../../assets/images/logo.png";
-import { Eye, EyeSlash, Warning } from "@phosphor-icons/react";
 import { useState } from "react";
 import { notification } from "antd";
-import request from "../../utils/axios";
-import Cookies from "js-cookie";
+import { Eye, EyeSlash, Warning } from "@phosphor-icons/react";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import Image from "next/image";
+import logo from "../../assets/images/logo.png";
+import Cookies from "js-cookie";
+import request from "../../utils/axios";
+import { setLogin } from "../../redux/features/chatSlice";
 
 function Login() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [hidePassword, setHidePassword] = useState(true);
   const [userName, setUserName] = useState("");
@@ -34,6 +37,7 @@ function Login() {
               description: "Login successfully!",
               icon: <Warning style={{ color: "#108ee9" }} />,
             });
+            dispatch(setLogin(true));
             Cookies.set("token", response.token);
             Cookies.set("refreshToken", response.refreshToken);
             setTimeout(() => {

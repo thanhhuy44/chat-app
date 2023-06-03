@@ -1,6 +1,6 @@
-import Header from '../../components/header';
-import Sidebar from '../../components/sidebar';
-import ChatRoom from '../../components/ChatRom';
+import Header from "../../components/Header";
+import Sidebar from "../../components/Sidebar";
+import ChatRoom from "../../components/ChatRoom";
 
 function Chat() {
   return (

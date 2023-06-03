@@ -1,9 +1,9 @@
-import Image from 'next/image';
-import avatar from '../assets/images/user.png';
+import Image from "next/image";
+import avatar from "../assets/images/user.png";
 
-function ContactItem() {
+function ContactItem({ user }) {
   return (
-    <div className="rounded-xl bg-primary-3 hover:bg-primary-2 cursor-pointer flex w-full items-center px-8 py-4 gap-x-4">
+    <div className="rounded-xl bg-primary-3 hover:bg-primary-2 cursor-pointer flex w-full items-center px-4 py-4 gap-x-4">
       <div className="relative">
         <Image
           className="relative block w-20 aspect-square rounded-full"
@@ -14,7 +14,7 @@ function ContactItem() {
       </div>
       <div>
         <p className="font-semibold text-base leading-6 text-primary-1">
-          User Name
+          {user.userName}
         </p>
         <p className="text-sm leading-5 line-clamp-1">
           Last message fahf fawfh kfakwef ;e efhal ehfa
