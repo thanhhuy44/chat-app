@@ -1,19 +1,19 @@
-import Image from 'next/image';
-import logo from '../../assets/images/logo.png';
-import { Eye, EyeSlash, Warning } from '@phosphor-icons/react';
-import { useState } from 'react';
-import { notification } from 'antd';
-import request from '../../utils/axios';
-import { useRouter } from 'next/router';
+import Image from "next/image";
+import logo from "../../assets/images/logo.png";
+import { Eye, EyeSlash, Warning } from "@phosphor-icons/react";
+import { useState } from "react";
+import { notification } from "antd";
+import request from "../../utils/axios";
+import { useRouter } from "next/router";
 
 function Register() {
   const [hidePassword, setHidePassword] = useState(true);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [userName, setUserName] = useState('');
-  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
 
   const [api, contextHolder] = notification.useNotification();
   const { replace } = useRouter();
@@ -29,7 +29,7 @@ function Register() {
     ];
 
     const validate = formData.every((field) => {
-      if (field === '') {
+      if (field === "") {
         return false;
       } else {
         return true;
@@ -47,43 +47,43 @@ function Register() {
       );
     !validate &&
       api.open({
-        message: 'Notification',
-        description: 'Please complete all information!',
-        icon: <Warning style={{ color: '#108ee9' }} />,
+        message: "Notification",
+        description: "Please complete all information!",
+        icon: <Warning style={{ color: "#108ee9" }} />,
       });
     validate &&
       !validatePhone &&
       api.open({
-        message: 'Notification',
-        description: 'Please enter the correct phone number!',
-        icon: <Warning style={{ color: '#108ee9' }} />,
+        message: "Notification",
+        description: "Please enter the correct phone number!",
+        icon: <Warning style={{ color: "#108ee9" }} />,
       });
     validate &&
       !validateEmail &&
       api.open({
-        message: 'Notification',
-        description: 'Please enter the correct email!',
-        icon: <Warning style={{ color: '#108ee9' }} />,
+        message: "Notification",
+        description: "Please enter the correct email!",
+        icon: <Warning style={{ color: "#108ee9" }} />,
       });
 
     validate &&
       !validateUserName &&
       api.open({
-        message: 'Notification',
-        description: 'Username must be at least 6 characters',
-        icon: <Warning style={{ color: '#108ee9' }} />,
+        message: "Notification",
+        description: "Username must be at least 6 characters",
+        icon: <Warning style={{ color: "#108ee9" }} />,
       });
     validate &&
       !validatePassword &&
       api.open({
-        message: 'Notification',
+        message: "Notification",
         description:
-          'Password must be at least 8 characters long, including at least one number, one uppercase letter and one special character.',
-        icon: <Warning style={{ color: '#108ee9' }} />,
+          "Password must be at least 8 characters long, including at least one number, one uppercase letter and one special character.",
+        icon: <Warning style={{ color: "#108ee9" }} />,
       });
     if (validate && validateEmail && validatePhone && validatePassword) {
       request
-        .post('/user/register', {
+        .post("/user/register", {
           firstName,
           lastName,
           phoneNumber,
@@ -95,17 +95,17 @@ function Register() {
           if (response.errCode === 0) {
             api.open({
               message: <h1 className="text-blue-500">Notification</h1>,
-              description: 'Register successfully!',
-              icon: <Warning style={{ color: '#108ee9' }} />,
+              description: "Register successfully!",
+              icon: <Warning style={{ color: "#108ee9" }} />,
             });
             setTimeout(() => {
-              replace('/login');
+              replace("/login");
             }, 3000);
           } else {
             api.open({
-              message: 'Notification',
+              message: "Notification",
               description: `${response.message}`,
-              icon: <Warning style={{ color: '#108ee9' }} />,
+              icon: <Warning style={{ color: "#108ee9" }} />,
             });
           }
         });
@@ -117,7 +117,7 @@ function Register() {
       {contextHolder}
       <div className="min-w-[768px]  max-w-[1024px] mx-auto bg-primary-5 py-4 px-8 rounded-xl">
         <div className="flex justify-center gap-x-4">
-          <Image src={logo} alt="logo" />
+          <Image src={logo} alt="logo" className="h-[120px] w-auto" />
         </div>
         <h1 className="mt-4 text-center uppercase font-bold text-3xl text-primary-2">
           Register
@@ -127,7 +127,8 @@ function Register() {
             <div className="block w-full">
               <label
                 className="block px-4 py-1 text-lg text-primary-1"
-                htmlFor="firstName">
+                htmlFor="firstName"
+              >
                 First Name
               </label>
               <input
@@ -142,7 +143,8 @@ function Register() {
             <div className="block w-full">
               <label
                 className="block px-4 py-1 text-lg text-primary-1"
-                htmlFor="lastName">
+                htmlFor="lastName"
+              >
                 Last Name
               </label>
               <input
@@ -159,7 +161,8 @@ function Register() {
             <div className="block w-full">
               <label
                 className="block px-4 py-1 text-lg text-primary-1"
-                htmlFor="phoneNumber">
+                htmlFor="phoneNumber"
+              >
                 Phone
               </label>
               <input
@@ -175,7 +178,8 @@ function Register() {
             <div className="block w-full">
               <label
                 className="block px-4 py-1 text-lg text-primary-1"
-                htmlFor="email">
+                htmlFor="email"
+              >
                 Email
               </label>
               <input
@@ -192,7 +196,8 @@ function Register() {
           <div className="block w-full">
             <label
               className="block px-4 py-1 text-lg text-primary-1"
-              htmlFor="userName">
+              htmlFor="userName"
+            >
               User Name
             </label>
             <input
@@ -208,7 +213,8 @@ function Register() {
           <div className="block w-full">
             <label
               className="block px-4 py-1 text-lg text-primary-1"
-              htmlFor="password">
+              htmlFor="password"
+            >
               Password
             </label>
             <div className="bg-primary-4 flex gap-x-2 flex-nowrap items-center p-4 w-full rounded-lg text-primary-1 font-medium text-lg">
@@ -217,7 +223,7 @@ function Register() {
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
-                type={hidePassword ? 'password' : 'text'}
+                type={hidePassword ? "password" : "text"}
                 id="password"
                 className="focus:outline-none bg-transparent flex-1"
               />
@@ -225,7 +231,8 @@ function Register() {
                 className="cursor-pointer"
                 onClick={() => {
                   setHidePassword(!hidePassword);
-                }}>
+                }}
+              >
                 {hidePassword ? <Eye /> : <EyeSlash />}
               </div>
             </div>
@@ -233,7 +240,8 @@ function Register() {
           <div className="mt-4 flex w-full justify-center">
             <button
               onClick={handleSubmit}
-              className="min-w-[300px] px-12 py-4 rounded-lg bg-primary-1 uppercase text-primary-4 text-xl font-medium">
+              className="min-w-[300px] px-12 py-4 rounded-lg bg-primary-1 uppercase text-primary-4 text-xl font-medium"
+            >
               Submit
             </button>
           </div>

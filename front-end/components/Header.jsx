@@ -1,14 +1,22 @@
-import Image from 'next/image';
-import logo from '../assets/images/logo.png';
-import Link from 'next/link';
-import request from '../utils/axios';
+import Image from "next/image";
+import logo from "../assets/images/logo.png";
+import Link from "next/link";
+import request from "../utils/axios";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 function Header() {
+  const isLogin = useSelector((state) => state.chatApp.isLogin);
+
   const handleLogout = async () => {
-    await request.post('/user/logout').then((response) => {
+    await request.post("/user/logout").then((response) => {
       console.log(response);
     });
   };
+
+  useEffect(() => {
+    console.log(isLogin);
+  }, []);
 
   return (
     <div className="px-8 py-2 bg-primary-5 h-20 flex items-center justify-between">
@@ -23,9 +31,9 @@ function Header() {
         </h1>
       </div>
       <div className="flex items-center gap-x-4 text-primary-1 font-normal text-[20px]">
-        <Link href={'#'}>Home</Link>
+        <Link href={"#"}>Home</Link>
         <div onClick={handleLogout}>About US</div>
-        <Link href={'#'}>Sign Out</Link>
+        <Link href={"#"}>Sign Out</Link>
       </div>
     </div>
   );
