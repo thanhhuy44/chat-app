@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  userName: process.browser
-    ? localStorage.getItem("isLogin")
-      ? JSON.parse(localStorage.getItem("isLogin"))
-      : ""
-    : "",
+  currUser: process.browser
+    ? localStorage.getItem("currUser")
+      ? JSON.parse(localStorage.getItem("currUser"))
+      : null
+    : null,
   isLogin: process.browser
     ? localStorage.getItem("isLogin")
       ? JSON.parse(localStorage.getItem("isLogin"))

@@ -11,6 +11,7 @@ function Header() {
   const dispatch = useDispatch();
   const router = useRouter();
   const isLogin = useSelector((state) => state.chatApp.isLogin);
+  const currUser = useSelector((state) => state.chatApp.currUser);
 
   const handleLogout = async () => {
     await dispatch(setLogin(false));
@@ -36,15 +37,19 @@ function Header() {
       <div className="flex items-center gap-x-4 text-primary-1 font-normal text-[20px]">
         {isLogin ? (
           <div className="flex items-center gap-x-4">
-            <p>thanhhuy44</p>
+            <p>{currUser.userName}</p>
             <p className="cursor-pointer" onClick={handleLogout}>
               Logout
             </p>
           </div>
         ) : (
           <div className="flex items-center gap-x-4">
-            <Link href={"/register"}>Register</Link>
-            <Link href={"/login"}>Login</Link>
+            <Link href={"/register"}>
+              <a href={"/register"}>Register</a>
+            </Link>
+            <Link href={"/login"}>
+              <a href="/login">Login</a>
+            </Link>
           </div>
         )}
       </div>

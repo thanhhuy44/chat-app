@@ -34,6 +34,12 @@ const getConversationsOfUser = async (req, res) => {
         members: req.params.user,
       })
         .select("-messages")
+        .populate({
+          path: "lastMessage",
+        })
+        .populate({
+          path: "members",
+        })
         .then((result, error) => {
           if (error) {
             resolve({
@@ -65,7 +71,7 @@ const getDetailConversation = async (req, res) => {
           path: "messages",
         })
         .populate({
-          path: "lastMessage",
+          path: "members",
         })
         .then((result, error) => {
           if (error) {

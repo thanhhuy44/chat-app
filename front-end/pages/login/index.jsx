@@ -7,7 +7,7 @@ import Image from "next/image";
 import logo from "../../assets/images/logo.png";
 import Cookies from "js-cookie";
 import request from "../../utils/axios";
-import { setLogin } from "../../redux/features/chatSlice";
+import { setLogin, setCurrUser } from "../../redux/features/chatSlice";
 
 function Login() {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ function Login() {
       });
     } else {
       request
-        .post("/user/login", {
+        .post("/users/login", {
           userName,
           password,
         })
@@ -38,8 +38,7 @@ function Login() {
               icon: <Warning style={{ color: "#108ee9" }} />,
             });
             dispatch(setLogin(true));
-            Cookies.set("token", response.token);
-            Cookies.set("refreshToken", response.refreshToken);
+            dispatch(setCurrUser(response.user));
             setTimeout(() => {
               router.replace("/");
             }, 3000);
