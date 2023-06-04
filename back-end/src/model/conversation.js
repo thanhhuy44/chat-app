@@ -1,19 +1,36 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import Message from "./message.js";
 const Schema = mongoose.Schema;
 const ConversationSchema = new Schema({
-  member: [
+  members: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
   ],
-  message: [
+  messages: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Message',
+      ref: "Message",
     },
   ],
+  lastMessage: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Message",
+  },
+  // unread: [
+  //   {
+  //     user: {
+  //       type: mongoose.Schema.Types.ObjectId,
+  //       ref: "User",
+  //     },
+  //     count: {
+  //       type: Number,
+  //       default: 0,
+  //     },
+  //   },
+  // ],
 });
 
-const Conversation = mongoose.model('Conversation', ConversationSchema);
-export default User;
+const Conversation = mongoose.model("Conversation", ConversationSchema);
+export default Conversation;
