@@ -5,11 +5,13 @@ function ContactItem({ user }) {
   return (
     <div className="rounded-xl bg-primary-3 hover:bg-primary-2 cursor-pointer flex w-full items-center px-4 py-4 gap-x-4">
       <div className="relative">
-        <Image
-          className="relative block w-20 aspect-square rounded-full"
-          src={avatar}
-          alt="avatar"
-        />
+        <div className="w-10 aspect-square flex items-center justify-center">
+          <Image
+            className="relative block w-[40px] aspect-square rounded-full"
+            src={avatar}
+            alt="avatar"
+          />
+        </div>
         <div className="w-3 h-3 absolute bottom-0 right-0 rounded-full bg-green-500"></div>
       </div>
       <div>

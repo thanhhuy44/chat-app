@@ -1,8 +1,16 @@
+import { useState } from "react";
 import Image from "next/image";
 import avatar from "../assets/images/user.png";
 import Message from "./Message";
+import io from "socket.io-client";
 
 function ChatRoom() {
+  const [message, setMessages] = useState("");
+
+  const handleSendMessage = () => {
+    console.log(message);
+  };
+
   return (
     <div className="absolute top-4 right-0 left-4 h-full rounded-xl bg-primary-5 overflow-hidden flex flex-col justify-between">
       <div className="flex items-center gap-x-4 py-4 px-8 bg-primary-3">
@@ -80,8 +88,9 @@ function ChatRoom() {
           className="flex-1 block bg-transparent focus:outline-none font-medium text-primary-1"
           type="text"
           placeholder="Viết tin nhắn..."
+          onChange={(e) => setMessages(e.target.value)}
         />
-        <div>Send</div>
+        <div onClick={handleSendMessage}>Send</div>
       </div>
     </div>
   );
