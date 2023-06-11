@@ -19,10 +19,7 @@ function ContactItem({ conversation }) {
 
   return (
     <Link href={`/chat/${conversation._id}`} passHref={true}>
-      <a
-        href={`/chat/${conversation._id}`}
-        className="rounded-xl bg-primary-3 hover:bg-primary-2 cursor-pointer flex w-full items-center px-4 py-4 gap-x-4"
-      >
+      <div className="rounded-xl bg-primary-3 hover:bg-primary-2 cursor-pointer flex w-full items-center px-4 py-4 gap-x-4">
         <div className="relative">
           <div className="w-10 aspect-square flex items-center justify-center">
             <Image
@@ -35,14 +32,14 @@ function ContactItem({ conversation }) {
         </div>
         <div>
           <p className="font-semibold text-base leading-6 text-primary-1">
-            {getContact().userName}
+            {getContact()?.userName}
           </p>
           <p className="text-sm leading-5 line-clamp-1">
             {conversation.lastMessage.sender === currUser._id && "You: "}
             {conversation.lastMessage.text}
           </p>
         </div>
-      </a>
+      </div>
     </Link>
   );
 }

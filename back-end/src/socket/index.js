@@ -13,6 +13,10 @@ const socket = (server) => {
   io.on("connection", (socket) => {
     console.log("A client connected.");
 
+    socket.on("join_conversation", (conversationId) => {
+      socket.join(conversationId);
+    });
+
     socket.on("send-message", async (data) => {
       await Message.create({
         conversation: data.conversation,
@@ -52,7 +56,8 @@ const socket = (server) => {
         .populate({
           path: "members",
         });
-      io.emit("received-message", messages);
+
+      io.to(data.conversation).emit("received_message", messages);
       io.emit("updated-conversations", conversation);
     });
 

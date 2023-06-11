@@ -37,19 +37,15 @@ function Header() {
       <div className="flex items-center gap-x-4 text-primary-1 font-normal text-[20px]">
         {isLogin ? (
           <div className="flex items-center gap-x-4">
-            <p>{currUser.userName}</p>
+            <p>{currUser?.userName}</p>
             <p className="cursor-pointer" onClick={handleLogout}>
               Logout
             </p>
           </div>
         ) : (
           <div className="flex items-center gap-x-4">
-            <Link href={"/register"}>
-              <a href={"/register"}>Register</a>
-            </Link>
-            <Link href={"/login"}>
-              <a href="/login">Login</a>
-            </Link>
+            <Link href={"/register"}>Register</Link>
+            <Link href={"/login"}>Login</Link>
           </div>
         )}
       </div>
