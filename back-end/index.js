@@ -26,17 +26,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: "application/json" }));
 app.use(bodyParser.raw());
 
-// app.use((req, res, next) => {
-//   let data = "";
-//   req.on("data", (chunk) => {
-//     data += chunk;
-//   });
-//   req.on("end", () => {
-//     req.rawBody = JSON.parse(data);
-//     next();
-//   });
-// });
-
 app.get("/", (req, res) => {
   return res.send("App is running...");
 });

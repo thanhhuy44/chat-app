@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema(
@@ -34,6 +34,11 @@ const UserSchema = new Schema(
       required: true,
       selected: false,
     },
+    isOnline: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     toJSON: {
@@ -44,7 +49,7 @@ const UserSchema = new Schema(
   }
 );
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre("save", function (next) {
   let user = this;
   bcrypt.hash(user.password, 10, (error, hash) => {
     user.password = hash;
@@ -52,5 +57,5 @@ UserSchema.pre('save', function (next) {
   });
 });
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model("User", UserSchema);
 export default User;
