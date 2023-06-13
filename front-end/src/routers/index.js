@@ -3,11 +3,17 @@ import Mainlayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import Chat from "../pages/Chat";
 
 const publicRoutes = [
   {
     path: "/",
     component: Home,
+    layout: Mainlayout,
+  },
+  {
+    path: "/chat",
+    component: Chat,
     layout: Mainlayout,
   },
   {
