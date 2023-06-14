@@ -22,7 +22,10 @@ function Chat() {
       </div>
       <div className="p-4">
         <div className="py-2 flex w-full items-center gap-x-2 bg-primary-2 px-4 rounded-lg focus-within:shadow-xl">
-          <input className="block flex-1 py-2 focus:outline-none bg-transparent" />
+          <input
+            placeholder="Type message..."
+            className="block flex-1 py-2 focus:outline-none bg-transparent"
+          />
           <div className="cursor-pointer text-primary-5 hover:text-primary-4 duration-150">
             <PaperPlaneRight weight="fill" size={32} />
           </div>
