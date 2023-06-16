@@ -12,7 +12,7 @@ const publicRoutes = [
     layout: Mainlayout,
   },
   {
-    path: "/chat",
+    path: "/conversations/:id",
     component: Chat,
     layout: Mainlayout,
   },

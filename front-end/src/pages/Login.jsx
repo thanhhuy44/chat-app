@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthInfo, setLogIn } from "../redux/features/chatSlice";
+import Cookies from "js-cookie";
 
 function Login() {
   const navigate = useNavigate();
@@ -25,10 +26,15 @@ function Login() {
     const { userName, password } = data;
     const response = await userApi.login(userName, password);
     if (response.type === "success") {
-      toast.success("Login successfully!");
-      dispatch(setLogIn(true));
-      dispatch(setAuthInfo(response.data.user));
-      navigate("/");
+      if (response.data.errCode === 0) {
+        toast.success("Login successfully!");
+        Cookies.set("token", response.data?.token);
+        dispatch(setLogIn(true));
+        dispatch(setAuthInfo(response.data.user));
+        navigate("/");
+      } else {
+        toast.error(response.data?.message);
+      }
     } else {
       toast.error("Something went wrong, please try again!");
     }

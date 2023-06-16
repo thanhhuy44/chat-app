@@ -65,10 +65,14 @@ const userLogin = async (req, res) => {
           if (user) {
             bcrypt.compare(req.body.password, user.password, (error, same) => {
               if (same) {
+                let token = jwt.sign({ user }, process.env.TOKEN_SECRET, {
+                  expiresIn: "1h",
+                });
                 resolve({
                   errCode: 0,
                   message: "Đăng nhập thành công!",
                   user: user,
+                  token,
                 });
               } else {
                 resolve({

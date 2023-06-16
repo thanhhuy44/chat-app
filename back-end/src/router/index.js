@@ -11,26 +11,41 @@ const routes = (app) => {
   router.post("/users/login", UserControllers.logIn);
   router.post("/users/logout", UserControllers.logOut);
   router.get("/users", UserControllers.getAll);
-  router.get("/search/user", UserControllers.searchUsers);
+  router.get(
+    "/search/users",
+    authMiddlwares.authenticateToken,
+    UserControllers.searchUsers
+  );
 
   //Conversations
   router.post(
     "/conversations/create",
+    authMiddlwares.authenticateToken,
     ConversationControllers.createConversation
   );
   router.get(
     "/conversations/:user",
+    authMiddlwares.authenticateToken,
     ConversationControllers.getConversationsOfUser
   );
   router.get(
     "/conversations/detail/:id",
+    authMiddlwares.authenticateToken,
     ConversationControllers.getDetailConversation
   );
 
   //Messages
 
-  router.post("/messages/send", MessagesControllers.createMessage);
-  router.post("/messages/seen", MessagesControllers.seenMessage);
+  router.post(
+    "/messages/send",
+    authMiddlwares.authenticateToken,
+    MessagesControllers.createMessage
+  );
+  router.post(
+    "/messages/seen",
+    authMiddlwares.authenticateToken,
+    MessagesControllers.seenMessage
+  );
 
   //another routes
   router.get("*", (req, res) => {

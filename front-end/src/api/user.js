@@ -51,6 +51,21 @@ const userApi = {
   changePassword: () => {},
 
   forgotPassword: () => {},
+
+  getAll: async (page = 1, pageSize = 50) => {
+    try {
+      const response = await request.get("/users");
+      return {
+        type: "success",
+        data: response,
+      };
+    } catch (error) {
+      return {
+        type: "error",
+        data: error,
+      };
+    }
+  },
 };
 
 export default userApi;

@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 const verifyJwtToken = (token, secretKey) => {
   return new Promise((resolve, reject) => {
@@ -13,7 +13,7 @@ const verifyJwtToken = (token, secretKey) => {
 };
 
 const authenticateToken = async (req, res, next) => {
-  const token = req.headers['x-access-token'];
+  const token = req.headers["authorization"];
 
   if (token) {
     try {
@@ -23,19 +23,18 @@ const authenticateToken = async (req, res, next) => {
     } catch (err) {
       console.error(err);
       return res.status(401).json({
-        message: 'Unauthorized access.',
+        message: "Unauthorized access.",
       });
     }
   } else {
     return res.status(403).send({
-      message: 'No token provided.',
+      message: "No token provided.",
     });
   }
 };
 
 const authenticateRefreshToken = async (req, res, next) => {
-  console.log(req.headers);
-  const refreshToken = req.headers['x-access-refresh-token'];
+  const refreshToken = req.headers["x-access-refresh-token"];
 
   if (refreshToken) {
     try {
@@ -48,12 +47,12 @@ const authenticateRefreshToken = async (req, res, next) => {
     } catch (err) {
       console.error(err);
       return res.status(401).json({
-        message: 'Unauthorized access.',
+        message: "Unauthorized access.",
       });
     }
   } else {
     return res.status(403).send({
-      message: 'No refresh token provided.',
+      message: "No refresh token provided.",
     });
   }
 };

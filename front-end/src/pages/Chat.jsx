@@ -1,6 +1,31 @@
+import { useEffect, useState } from "react";
 import { UserCircle, PaperPlaneRight } from "@phosphor-icons/react";
+import conversationApi from "../api/conversation";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Chat() {
+  const location = useLocation();
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleGetData = async () => {
+    const response = await conversationApi.getDetail(location.state?.id);
+    if (response.type === "success") {
+      if (response.data.errCode === 0) {
+        console.log(response.data);
+      } else {
+        toast.error("Something went wrong, please try again later!");
+      }
+    } else {
+      toast.error("Something went wrong, please try again later!");
+    }
+  };
+
+  useEffect(() => {
+    handleGetData();
+  }, []);
+
   return (
     <div className="flex flex-col w-full h-full bg-primary-5 rounded-lg overflow-hidden">
       <div className="flex items-center gap-x-2 p-4 bg-primary-3">

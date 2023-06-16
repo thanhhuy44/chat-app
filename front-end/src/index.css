@@ -67,24 +67,23 @@ input {
   background-color: transparent;
 }
 
-input:focus{
+input:focus {
   outline: none;
 }
 
 /* For WebKit based browsers (Chrome, Safari, Opera) */
 ::-webkit-scrollbar {
-  @apply w-2
+  @apply w-2 rounded-full;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-primary-5
+  @apply bg-primary-5 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary-1 rounded-full cursor-pointer
+  @apply bg-primary-1 rounded-full cursor-pointer;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply cursor-pointer bg-primary-2
-  
+  @apply cursor-pointer bg-primary-2;
 }

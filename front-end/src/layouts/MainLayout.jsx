@@ -9,10 +9,8 @@ function Mainlayout({ children }) {
           <Header />
         </div>
         <div className="flex-1 flex w-full items-start h-full ">
-          <div className="flex-[3] h-full relative bg-primary-5 py-4">
-            <div className="absolute top-4 left-0 right-0 bottom-4 overflow-y-auto">
-              <Sidebar />
-            </div>
+          <div className="flex-[3] h-full relative !py-4 bg-primary-4 ">
+            <Sidebar />
           </div>
           <div className="relative h-full flex-[7] ">
             <div className="absolute top-0 left-0 right-0 bottom-0 bg-primary-4 p-4">
