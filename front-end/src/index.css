@@ -60,3 +60,31 @@ body {
   font-family: "Geologica", Cambria, Cochin, Georgia, Times, "Times New Roman",
     serif !important;
 }
+
+input {
+  display: block;
+  width: 100%;
+  background-color: transparent;
+}
+
+input:focus{
+  outline: none;
+}
+
+/* For WebKit based browsers (Chrome, Safari, Opera) */
+::-webkit-scrollbar {
+  @apply w-2
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-primary-5
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary-1 rounded-full cursor-pointer
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply cursor-pointer bg-primary-2
+  
+}

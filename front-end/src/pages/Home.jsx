@@ -1,8 +1,9 @@
 import { useState } from "react";
 import HomeImage from "../assets/images/home.png";
+import { useSelector } from "react-redux";
 
 function Home() {
-  const [isLogin, setIsLogin] = useState(true);
+  const isLogin = useSelector((state) => state.chat.isLogin);
 
   return (
     <div className="flex items-center justify-center w-full h-full bg-primary-5 rounded-lg p-4">
