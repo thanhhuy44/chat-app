@@ -1,10 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import Logo from "../assets/images/logo.png";
 import userApi from "../api/user";
-import { useState } from "react";
 import { CircleNotch, Eye, EyeSlash } from "@phosphor-icons/react";
-import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthInfo, setLogIn } from "../redux/features/chatSlice";
 
@@ -25,10 +25,6 @@ function Login() {
     const { userName, password } = data;
     const response = await userApi.login(userName, password);
     if (response.type === "success") {
-      console.log(
-        "🚀 ~ file: Login.jsx:28 ~ handleLogin ~ response.type:",
-        response.data
-      );
       toast.success("Login successfully!");
       dispatch(setLogIn(true));
       dispatch(setAuthInfo(response.data.user));

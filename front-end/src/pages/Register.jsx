@@ -1,11 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
-import Logo from "../assets/images/logo.png";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Logo from "../assets/images/logo.png";
 import userApi from "../api/user";
 import { CircleNotch } from "@phosphor-icons/react";
-import { useForm } from "react-hook-form";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
-import { toast } from "react-toastify";
 
 function Register() {
   const navigate = useNavigate();
@@ -24,9 +24,6 @@ function Register() {
 
   const handleRegister = async (data) => {
     const { firstName, lastName, phoneNumber, email, userName } = data;
-    console.log("====================================");
-    console.log(data);
-    console.log("====================================");
     setIsSending(true);
     const respone = await userApi.register(
       firstName,
