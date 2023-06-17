@@ -67,9 +67,7 @@ const getDetailConversation = async (req, res) => {
       await Conversation.findById({
         _id: req.params.id,
       })
-        .populate({
-          path: "messages",
-        })
+        .select("-messages ")
         .populate({
           path: "members",
         })

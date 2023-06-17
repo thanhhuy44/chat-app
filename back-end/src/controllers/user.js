@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import User from "../model/user.js";
 import UserToken from "../model/token.js";
 import jwt from "jsonwebtoken";
+import UserServices from "../services/user.js";
 
 const userSignUp = async (req, res) => {
   const data = new Promise(async (resolve, reject) => {
@@ -51,49 +52,11 @@ const userSignUp = async (req, res) => {
 };
 
 const userLogin = async (req, res) => {
-  const data = new Promise(async (resolve, reject) => {
-    try {
-      await User.findOne({
-        userName: req.body.userName,
-      }).then(async (user, error) => {
-        if (error) {
-          resolve({
-            errCode: 1,
-            message: error.message,
-          });
-        } else {
-          if (user) {
-            bcrypt.compare(req.body.password, user.password, (error, same) => {
-              if (same) {
-                let token = jwt.sign({ user }, process.env.TOKEN_SECRET, {
-                  expiresIn: "1h",
-                });
-                resolve({
-                  errCode: 0,
-                  message: "Đăng nhập thành công!",
-                  user: user,
-                  token,
-                });
-              } else {
-                resolve({
-                  errCode: 1,
-                  message: "Sai mật khẩu!",
-                });
-              }
-            });
-          } else {
-            resolve({
-              errCode: 1,
-              message: "Không tìm thấy người dùng trên hệ thống!",
-            });
-          }
-        }
-      });
-    } catch (error) {
-      reject(error);
-    }
+  const data = await UserServices.handleLogin({
+    userName: req.body.userName,
+    password: req.body.password,
   });
-  return data.then((data) => res.json(data));
+  return res.status(200).json(data);
 };
 
 const userLogout = async (req, res) => {

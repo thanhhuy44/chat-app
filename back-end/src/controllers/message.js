@@ -86,9 +86,31 @@ const seenMessage = async (req, res) => {
   return data.then((data) => res.json(data));
 };
 
+const getAllMessages = async (req, res) => {
+  const conversationId = req.params.conversationId;
+  await Message.find({
+    conversation: conversationId,
+  }).then((result, error) => {
+    if (result) {
+      return res.status(200).json({
+        errCode: 0,
+        message: "Successfully!",
+        data: result,
+      });
+    } else {
+      return res.status(400).json({
+        errCode: 1,
+        message: "Error!",
+        data: error,
+      });
+    }
+  });
+};
+
 const MessagesControllers = {
   createMessage,
   seenMessage,
+  getAllMessages,
 };
 
 export default MessagesControllers;

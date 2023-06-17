@@ -7,7 +7,6 @@ const verifyJwtToken = (token, secretKey) => {
         return reject(err);
       }
       resolve(decoded);
-      console.log(decoded);
     });
   });
 };

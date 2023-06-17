@@ -46,6 +46,11 @@ const routes = (app) => {
     authMiddlwares.authenticateToken,
     MessagesControllers.seenMessage
   );
+  router.get(
+    "/messages/:conversationId",
+    authMiddlwares.authenticateToken,
+    MessagesControllers.getAllMessages
+  );
 
   //another routes
   router.get("*", (req, res) => {
