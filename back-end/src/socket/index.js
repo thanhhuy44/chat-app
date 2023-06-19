@@ -16,8 +16,13 @@ const socket = (server) => {
   });
 
   io.on("connection", (socket) => {
+    let userConnectedId = null;
     socket.on("online", async (userId) => {
-      await UserServices.handleOnline(userId);
+      userConnectedId = userId;
+      connectedUsers[userConnectedId] = userId;
+      await UserServices.handleChangeUserStatus(userId, true);
+      io.emit("updated-conversations");
+      io.emit("updated-users");
     });
 
     socket.on("join_conversation", (conversationId) => {
@@ -26,13 +31,35 @@ const socket = (server) => {
 
     socket.on("send-message", async (data) => {
       const message = await MessageServices.handleSendMessage(data);
+      if (message) {
+        await ConversationServices.handleUpdateConversation(message.data);
+      }
       io.to(data.conversation).emit("received_message", message);
-      // io.emit("updated-conversations", conversation);
-      io.in();
+      io.to(data.conversation).emit("updated-conversations");
     });
 
-    socket.on("disconnect", () => {
+    socket.on("logout", async (id) => {
+      console.log("A client logout.");
+      if (userConnectedId) {
+        const user = connectedUsers[userConnectedId];
+        if (user) {
+          await UserServices.handleChangeUserStatus(user, false);
+          delete connectedUsers[userConnectedId];
+        }
+      }
+      io.emit("updated-conversations");
+      io.emit("updated-users");
+    });
+
+    socket.on("disconnect", async () => {
       console.log("A client disconnected.");
+      if (userConnectedId) {
+        const user = connectedUsers[userConnectedId];
+        if (user) {
+          await UserServices.handleChangeUserStatus(user, false);
+          delete connectedUsers[userConnectedId];
+        }
+      }
     });
   });
 };

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import userApi from "../api/user";
 import { UserCircle, CircleNotch } from "@phosphor-icons/react";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 function ListUser() {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,21 +35,27 @@ function ListUser() {
         />
       ) : (
         users.map((user) => (
-          <div
+          <Link
+            to={"/conversations"}
             key={user._id}
+            state={{
+              guestUser: user,
+            }}
             className="flex items-center gap-x-2 w-full p-2 bg-transparent hover:bg-primary-3 rounded-lg cursor-pointer duration-200"
           >
             <div className="relative aspect-square">
               <UserCircle size={52} weight="bold" />
-              <div className="w-2 h-2 aspect-square rounded-full bg-green-500 absolute bottom-1 right-1"></div>
+              {user?.isOnline && (
+                <div className="w-2 h-2 aspect-square rounded-full bg-green-500 absolute bottom-1 right-1"></div>
+              )}
             </div>
             <div>
-              <p className="text-xl">{user.userName}</p>
+              <p className="text-xl">{user?.userName}</p>
               <p className="text-sm font-light text-gray-500">
-                ({user.firstName} {user.lastName})
+                ({user?.firstName} {user?.lastName})
               </p>
             </div>
-          </div>
+          </Link>
         ))
       )}
     </div>

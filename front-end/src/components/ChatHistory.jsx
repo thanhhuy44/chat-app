@@ -4,8 +4,10 @@ import ContactItem from "./ContactItem";
 import conversationApi from "../api/conversation";
 import { toast } from "react-toastify";
 import { CircleNotch } from "@phosphor-icons/react";
+import socket from "../socket";
 
 function ChatHistory() {
+  const isLogin = useSelector((state) => state.chat.isLogin);
   const user = useSelector((state) => state.chat.authInfo);
   const [conversations, setConversations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,16 +18,31 @@ function ChatHistory() {
       if (response.data?.errCode === 0) {
         setConversations(response.data?.data);
       } else {
-        toast.error("Some thing went wrong, please try again later!");
+        toast.error("Something went wrong, please try again later!");
       }
     } else {
-      toast.error("Some thing went wrong, please try again later!");
+      toast.error("Something went wrong, please try again later!");
     }
     setIsLoading(false);
   };
 
   useEffect(() => {
     getConversations();
+
+    socket.on("updated-conversations", async () => {
+      if (isLogin) {
+        const response = await conversationApi.getall(user._id);
+        if (response.type === "success") {
+          if (response.data?.errCode === 0) {
+            setConversations(response.data?.data);
+          } else {
+            toast.error("Something went wrong, please try again later!");
+          }
+        } else {
+          toast.error("Something went wrong, please try again later!");
+        }
+      }
+    });
   }, []);
 
   return (

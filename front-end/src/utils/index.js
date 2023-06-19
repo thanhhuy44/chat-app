@@ -5,8 +5,13 @@ const request = axios.create({
   baseURL: `http://localhost:3030/api`,
   headers: {
     "Content-Type": "application/json",
-    Authorization: Cookies.get("token") || "",
   },
+});
+
+request.interceptors.request.use(function (config) {
+  const token = Cookies.get("token");
+  config.headers.Authorization = token ? `${token}` : "";
+  return config;
 });
 
 request.interceptors.response.use(

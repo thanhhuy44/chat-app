@@ -7,44 +7,41 @@ const router = express.Router();
 
 const routes = (app) => {
   // Users
-  router.post("/users/register", UserControllers.signUp);
-  router.post("/users/login", UserControllers.logIn);
-  router.post("/users/logout", UserControllers.logOut);
-  router.get("/users", UserControllers.getAll);
-  router.get(
-    "/search/users",
-    authMiddlwares.authenticateToken,
-    UserControllers.searchUsers
-  );
+  router.post("/users/register", UserControllers.register);
+  router.post("/users/login", UserControllers.login);
 
   //Conversations
   router.post(
     "/conversations/create",
     authMiddlwares.authenticateToken,
-    ConversationControllers.createConversation
+    ConversationControllers.create
   );
   router.get(
-    "/conversations/:user",
+    "/conversations",
     authMiddlwares.authenticateToken,
-    ConversationControllers.getConversationsOfUser
+    ConversationControllers.getHistory
+  );
+  router.get(
+    "/conversations/detail/by-guest",
+    authMiddlwares.authenticateToken,
+    ConversationControllers.getDetailByMembers
   );
   router.get(
     "/conversations/detail/:id",
     authMiddlwares.authenticateToken,
-    ConversationControllers.getDetailConversation
+    ConversationControllers.getDetailById
   );
 
   //Messages
-
   router.post(
     "/messages/send",
     authMiddlwares.authenticateToken,
-    MessagesControllers.createMessage
+    MessagesControllers.send
   );
   router.post(
     "/messages/seen",
     authMiddlwares.authenticateToken,
-    MessagesControllers.seenMessage
+    MessagesControllers.seen
   );
   router.get(
     "/messages/:conversationId",

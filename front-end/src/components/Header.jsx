@@ -5,6 +5,7 @@ import { SignOut } from "@phosphor-icons/react";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { setLogIn, setAuthInfo } from "../redux/features/chatSlice";
+import socket from "../socket";
 
 function Header() {
   const navigate = useNavigate();
@@ -13,11 +14,12 @@ function Header() {
   const user = useSelector((state) => state.chat.authInfo);
 
   const handleLogout = async () => {
-    await Cookies.remove("token");
+    navigate("/login");
+    toast.success("Log out successfully!");
+    socket.emit("logout", user._id);
     dispatch(setAuthInfo(null));
     dispatch(setLogIn(false));
-    toast.success("Log out successfully!");
-    navigate("/login");
+    Cookies.remove("token");
   };
 
   return (

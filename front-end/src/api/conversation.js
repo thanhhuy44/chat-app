@@ -32,6 +32,21 @@ const conversationApi = {
       };
     }
   },
+  checkHasConversation: async (members) => {
+    const url = `/conversations/check`;
+    try {
+      const response = await request.post(url, { members });
+      return {
+        type: "success",
+        data: response,
+      };
+    } catch (error) {
+      return {
+        type: "error",
+        data: error,
+      };
+    }
+  },
 };
 
 export default conversationApi;

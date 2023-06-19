@@ -1,102 +1,49 @@
 import Conversation from "../model/conversation.js";
+import ConversationServices from "../services/conversation.js";
+import jwt from "jsonwebtoken";
 
-const createConversation = async (req, res) => {
-  const data = new Promise(async (resolve, reject) => {
-    try {
-      await Conversation.create({
-        members: req.rawBody.members,
-      }).then((result, error) => {
-        if (error) {
-          resolve({
-            errCode: 1,
-            error,
-          });
-        } else {
-          resolve({
-            errCode: 0,
-            message: "Create successfully!",
-            data: result,
-          });
-        }
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
-
-  return data.then((data) => res.json(data));
+const create = async (req, res) => {
+  const data = await ConversationServices.handleCreateConversation(req.body);
+  return res.status(200).json(data);
 };
 
-const getConversationsOfUser = async (req, res) => {
-  const data = new Promise(async (resolve, reject) => {
-    try {
-      await Conversation.find({
-        members: req.params.user,
-      })
-        .select("-messages")
-        .populate({
-          path: "lastMessage",
-        })
-        .populate({
-          path: "members",
-        })
-        .then((result, error) => {
-          if (error) {
-            resolve({
-              errCode: 1,
-              error,
-            });
-          } else {
-            resolve({
-              errCode: 0,
-              message: "Successfully!",
-              data: result,
-            });
-          }
-        });
-    } catch (error) {
-      reject(error);
-    }
-  });
-  return data.then((data) => res.json(data));
+const getHistory = async (req, res) => {
+  const token = req.headers["authorization"];
+  const info = jwt.decode(token);
+  const data = await ConversationServices.handleGetHistoryChat(info.result._id);
+  return res.status(200).json(data);
 };
 
-const getDetailConversation = async (req, res) => {
-  const data = new Promise(async (resolve, reject) => {
-    try {
-      await Conversation.findById({
-        _id: req.params.id,
-      })
-        .select("-messages ")
-        .populate({
-          path: "members",
-        })
-        .then((result, error) => {
-          if (error) {
-            resolve({
-              errCode: 1,
-              error,
-            });
-          } else {
-            resolve({
-              errCode: 0,
-              message: "Successfully!",
-              data: result,
-            });
-          }
-        });
-    } catch (error) {
-      reject(error);
-    }
-  });
+const getDetailByMembers = async (req, res) => {
+  const token = req.headers["authorization"];
+  const info = jwt.decode(token);
+  const members = [req.query.guestId, info.result._id];
+  const data = await ConversationServices.handleGetDetailConversationByMembers(
+    members
+  );
+  return res.status(200).json(data);
+};
 
-  return data.then((data) => res.json(data));
+const getDetailById = async (req, res) => {
+  const data = await ConversationServices.handleGetDetailConversationById(
+    req.params.id
+  );
+  return res.status(200).json(data);
+};
+
+const checkExistConversation = async (req, res) => {
+  const data = await ConversationServices.handleCheckExistConversation(
+    req.body.members
+  );
+  return res.status(200).json(data);
 };
 
 const ConversationControllers = {
-  createConversation,
-  getConversationsOfUser,
-  getDetailConversation,
+  create,
+  getHistory,
+  getDetailByMembers,
+  getDetailById,
+  checkExistConversation,
 };
 
 export default ConversationControllers;

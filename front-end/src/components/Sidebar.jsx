@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { ChatsCircle, Users } from "@phosphor-icons/react";
+import { useSelector } from "react-redux";
 import ListUser from "./ListUser";
 import ChatHistory from "./ChatHistory";
 
 function Sidebar() {
+  const isLogin = useSelector((state) => state.chat.isLogin);
   const [typeSidebar, setTypeSidebar] = useState("history");
 
-  return (
+  return isLogin ? (
     <div className="relative h-full flex flex-col gap-y-2 overflow-y-auto bg-primary-5 rounded-lg">
       <div className="grid grid-cols-2 bg-primary-5 z-[1] border-b border-black">
         <div
@@ -39,6 +41,8 @@ function Sidebar() {
         {typeSidebar === "users" && <ListUser />}
       </div>
     </div>
+  ) : (
+    <div></div>
   );
 }
 

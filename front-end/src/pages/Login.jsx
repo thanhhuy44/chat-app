@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthInfo, setLogIn } from "../redux/features/chatSlice";
 import Cookies from "js-cookie";
+import socket from "../socket";
 
 function Login() {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ function Login() {
         Cookies.set("token", response.data?.token);
         dispatch(setLogIn(true));
         dispatch(setAuthInfo(response.data.user));
+        socket.emit("online", response.data.user._id);
         navigate("/");
       } else {
         toast.error(response.data?.message);

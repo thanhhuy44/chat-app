@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Conversation from "./conversation.js";
 const Schema = mongoose.Schema;
 const MessageSchema = new Schema({
   sender: {
@@ -23,9 +24,17 @@ const MessageSchema = new Schema({
   },
 });
 
-MessageSchema.pre("save", function (next) {
+MessageSchema.pre("save", async function (next) {
   let message = this;
   message.seenBy = [...new Set(message.seenBy)];
+  await Conversation.findByIdAndUpdate(
+    {
+      _id: message.conversation,
+    },
+    {
+      lastMessage: message._id,
+    }
+  );
   next();
 });
 
