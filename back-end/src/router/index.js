@@ -9,6 +9,11 @@ const routes = (app) => {
   // Users
   router.post("/users/register", UserControllers.register);
   router.post("/users/login", UserControllers.login);
+  router.get(
+    "/users",
+    authMiddlwares.authenticateToken,
+    UserControllers.getAll
+  );
 
   //Conversations
   router.post(

@@ -99,10 +99,6 @@ const handleGetDetailConversationByMembers = async (members) => {
         };
       } else {
         if (result) {
-          console.log(
-            "🚀 ~ file: conversation.js:102 ~ handleGetDetailConversationByMembers ~ result:",
-            result
-          );
           return {
             errCode: 0,
             message: "success!",

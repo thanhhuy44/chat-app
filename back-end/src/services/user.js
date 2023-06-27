@@ -1,6 +1,7 @@
 import User from "../model/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const handleLogin = async (data) => {
   const { userName, password } = data;
@@ -124,10 +125,42 @@ const handleChangeUserStatus = async (id, status) => {
   return data;
 };
 
+const handleGetAll = async (page = 1, pageSize = 50, userId) => {
+  if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+    return {
+      errCode: 1,
+      message: "form error!",
+    };
+  } else {
+    const response = await User.find({
+      _id: { $ne: userId },
+    })
+      .skip((page - 1) * 10)
+      .limit(pageSize)
+      .then((result, error) => {
+        if (result) {
+          return {
+            errCode: 0,
+            message: "success!",
+            data: result,
+          };
+        } else {
+          return {
+            errCode: 1,
+            message: "error",
+            data: error,
+          };
+        }
+      });
+    return response;
+  }
+};
+
 const UserServices = {
   handleChangeUserStatus,
   handleLogin,
   handleReagister,
+  handleGetAll,
 };
 
 export default UserServices;
