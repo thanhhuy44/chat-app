@@ -10,7 +10,7 @@ function Home() {
 
   useEffect(() => {
     if (isLogin) {
-      socket.emit("online", user._id);
+      socket.emit("online", user?._id);
     }
   }, []);
 

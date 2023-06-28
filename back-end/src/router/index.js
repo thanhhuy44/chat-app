@@ -14,6 +14,11 @@ const routes = (app) => {
     authMiddlwares.authenticateToken,
     UserControllers.getAll
   );
+  router.get(
+    "/users/:id",
+    authMiddlwares.authenticateToken,
+    UserControllers.getUser
+  );
 
   //Conversations
   router.post(

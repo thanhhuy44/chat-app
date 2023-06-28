@@ -39,7 +39,7 @@ function ListUser() {
             to={"/conversations"}
             key={user._id}
             state={{
-              guestUser: user,
+              guestId: user._id,
             }}
             className="flex items-center gap-x-2 w-full p-2 bg-transparent hover:bg-primary-3 rounded-lg cursor-pointer duration-200"
           >

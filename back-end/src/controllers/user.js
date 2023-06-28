@@ -24,6 +24,13 @@ const getAll = async (req, res) => {
   return res.status(200).json(data);
 };
 
+const getUser = async (req, res) => {
+  const token = req.headers["authorization"];
+  const info = jwt.decode(token);
+  const data = await UserServices.handleGetUser(info.result._id, req.params.id);
+  return res.status(200).json(data);
+};
+
 const findUserByName = async (req, res) => {
   const data = new Promise(async (resolve, reject) => {
     try {
@@ -54,6 +61,7 @@ const UserControllers = {
   register,
   login,
   getAll,
+  getUser,
 };
 
 export default UserControllers;

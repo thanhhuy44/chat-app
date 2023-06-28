@@ -13,7 +13,7 @@ function ChatHistory() {
   const [isLoading, setIsLoading] = useState(true);
 
   const getConversations = async () => {
-    const response = await conversationApi.getall(user._id);
+    const response = await conversationApi.getall();
     if (response.type === "success") {
       if (response.data?.errCode === 0) {
         setConversations(response.data?.data);

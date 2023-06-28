@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Chat from "../pages/Chat";
+import ChatRoom from "../pages/ChatRoom";
 
 const publicRoutes = [
   {
@@ -18,7 +19,7 @@ const publicRoutes = [
   },
   {
     path: "/conversations/:id",
-    component: Chat,
+    component: ChatRoom,
     layout: Mainlayout,
   },
   {

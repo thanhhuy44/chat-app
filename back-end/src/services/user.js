@@ -1,4 +1,5 @@
 import User from "../model/user.js";
+import Conversation from "../model/conversation.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
@@ -156,11 +157,81 @@ const handleGetAll = async (page = 1, pageSize = 50, userId) => {
   }
 };
 
+const handleGetUser = async (userId, guestId) => {
+  if (
+    !userId ||
+    !mongoose.Types.ObjectId.isValid(userId) ||
+    !guestId ||
+    !mongoose.Types.ObjectId.isValid(guestId)
+  ) {
+    return {
+      errCode: 1,
+      message: "form error!",
+    };
+  } else {
+    const response = await User.findById({
+      _id: guestId,
+    }).then(async (result, error) => {
+      if (error) {
+        return {
+          errCode: 1,
+          message: "error!",
+          data: error,
+        };
+      } else {
+        if (result) {
+          const conversation = await Conversation.find({
+            members: { $all: [userId, guestId] },
+          }).then((conversation, error) => {
+            if (error) {
+              return {
+                errCode: 1,
+                message: "error!",
+                data: error,
+              };
+            } else {
+              if (conversation) {
+                return {
+                  errCode: 0,
+                  message: "success!",
+                  data: {
+                    user: result,
+                    conversation: conversation,
+                  },
+                };
+              } else {
+                return {
+                  errCode: 0,
+                  message: "success!",
+                  data: {
+                    user: result,
+                    conversation: null,
+                  },
+                };
+              }
+            }
+          });
+
+          return conversation;
+        } else {
+          return {
+            errCode: 1,
+            message: "user not found!",
+            data: null,
+          };
+        }
+      }
+    });
+    return response;
+  }
+};
+
 const UserServices = {
   handleChangeUserStatus,
   handleLogin,
   handleReagister,
   handleGetAll,
+  handleGetUser,
 };
 
 export default UserServices;

@@ -1,8 +1,8 @@
 import request from "../utils";
 
 const conversationApi = {
-  getall: async (userId) => {
-    const url = `/conversations/${userId}`;
+  getall: async () => {
+    const url = `/conversations`;
     try {
       const response = await request.get(url);
       return {
@@ -32,10 +32,11 @@ const conversationApi = {
       };
     }
   },
-  checkHasConversation: async (members) => {
-    const url = `/conversations/check`;
+
+  getDetailByMember: async (guestId) => {
+    const url = `/conversations/detail/by-guest?guestId=${guestId}`;
     try {
-      const response = await request.post(url, { members });
+      const response = await request.get(url);
       return {
         type: "success",
         data: response,

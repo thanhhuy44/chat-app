@@ -31,8 +31,8 @@ function Login() {
         toast.success("Login successfully!");
         Cookies.set("token", response.data?.token);
         dispatch(setLogIn(true));
-        dispatch(setAuthInfo(response.data.user));
-        socket.emit("online", response.data.user._id);
+        dispatch(setAuthInfo(response.data.data));
+        socket.emit("online", response.data.data?._id);
         navigate("/");
       } else {
         toast.error(response.data?.message);
