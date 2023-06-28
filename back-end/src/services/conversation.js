@@ -62,6 +62,7 @@ const handleGetHistoryChat = async (id) => {
       .sort({ updatedAt: -1 })
       .select("-messages")
       .populate("lastMessage")
+      .populate("members")
       .then((result, error) => {
         if (result) {
           return {

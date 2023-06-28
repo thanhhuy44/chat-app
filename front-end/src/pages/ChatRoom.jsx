@@ -70,11 +70,6 @@ function ChatRoom() {
         toast.error("Something went wrong, please try again later!");
       }
     });
-    return () => {
-      console.log("====================================");
-      console.log("hihihi");
-      console.log("====================================");
-    };
   }, [location.state?.id]);
 
   return (
