@@ -70,6 +70,9 @@ function ChatRoom() {
         toast.error("Something went wrong, please try again later!");
       }
     });
+    return () => {
+      socket.emit("out_conversation", location.state?.id);
+    };
   }, [location.state?.id]);
 
   return (
