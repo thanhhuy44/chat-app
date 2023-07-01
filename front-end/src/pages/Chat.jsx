@@ -1,88 +1,89 @@
-import { useEffect, useState } from "react";
-import conversationApi from "../api/conversation";
-import { useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
-import ChatHeader from "../components/ChatHeader";
-import ChatFooter from "../components/ChatFooter";
-import ChatMessage from "../components/ChatMessage";
-import chatApi from "../api/chat";
-import socket from "../socket";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { CircleNotch, User } from '@phosphor-icons/react';
+import { useSelector } from 'react-redux';
+import ChatFooter from '../components/ChatFooter';
+import userApi from '../api/user';
+import socket from '../socket';
 
 function Chat() {
   const user = useSelector((state) => state.chat.authInfo);
-  const isLogin = useSelector((state) => state.chat.isLogin);
   const location = useLocation();
-  const [data, setData] = useState(null);
-  const [messageText, setMessageText] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+  const [guestUser, setGuestUser] = useState();
+  const [loading, setLoading] = useState(true);
+  const [messageText, setMessageText] = useState('');
 
   const handleGetData = async () => {
-    if (location.state?.guestId) {
-      const response = await conversationApi.getDetailByMember(
-        location.state?.guestId
-      );
-      if (response.type === "success") {
-        if (response.data.errCode === 0) {
-          setData(response.data?.data);
-        } else {
-          toast.error("Something went wrong, please try again later!");
-        }
-      } else {
-        toast.error("Something went wrong, please try again later!");
-      }
+    const response = await userApi.getDetail(location.state.guestId);
+    if (response.data.errCode === 1) {
+      toast.error('Error!');
+      navigate('/');
     } else {
-    }
-  };
-
-  const handleGetMessages = async () => {
-    const response = await chatApi.getAllMessages(location.state?.id);
-    if (response.data?.errCode === 0) {
-      setMessages(response.data?.data);
+      if (response.data?.data?.conversation) {
+        let conversationId = response.data?.data?.conversation?._id;
+        navigate(`/conversations/${conversationId}`, {
+          state: {
+            id: conversationId,
+          },
+        });
+      } else {
+        setGuestUser(response.data?.data?.user);
+        setLoading(false);
+      }
     }
   };
 
   const handleSendMessages = () => {
-    const receiver = data?.members.filter((member) => member._id !== user._id);
+    const receiver = location.state.guestId;
     const form = {
-      conversation: location.state?.id || null,
       text: messageText,
       sender: user._id,
-      receiver: receiver[0]._id,
+      receiver: receiver,
     };
-    socket.emit("send-message", form);
+    socket.emit('send-message-new', form);
   };
 
   useEffect(() => {
-    if (isLogin) {
-      handleGetData();
-      // handleGetMessages();
-
-      if (location.state?.id) {
-        socket.emit("join_conversation", location.state?.id);
-        socket.on("received_message", (message) => {
-          if (message.errCode === 0) {
-            setMessages((prevMessages) => [...prevMessages, message?.data]);
-            setMessageText("");
-          } else {
-            toast.error("Something went wrong, please try again later!");
-          }
+    handleGetData();
+    socket.on('update-message-new', (message) => {
+      if (message.errCode === 0) {
+        navigate(`/conversations/${message?.data?.conversation}`, {
+          state: {
+            id: message?.data?.conversation,
+          },
         });
+        setMessageText('');
       } else {
+        toast.error('Something went wrong, please try again later!');
       }
-    }
+    });
+    return () => {
+      setGuestUser(null);
+      setLoading(true);
+      socket.off('update-message-new');
+    };
   }, [location.state]);
 
   return (
     <div className="flex flex-col w-full h-full bg-primary-5 rounded-lg overflow-hidden">
-      <div className="pb-4">
-        <ChatHeader data={data?.members} />
-      </div>
-      <div className="flex-1 relative">
-        <div className="absolute top-0 left-0 right-0 bottom-0 overflow-y-auto px-4">
-          <ChatMessage messages={messages} />
-        </div>
+      <div className="flex-1 flex flex-col items-center justify-center">
+        {loading ? (
+          <CircleNotch
+            size={32}
+            weight="bold"
+            className="text-primary-1 animate-spin"
+          />
+        ) : (
+          <div className="text-center flex flex-col gap-y-4 items-center">
+            <User size={64} />
+            <p className="text-2xl font-medium">{`${guestUser.firstName} ${guestUser.lastName}`}</p>
+            <p className="text-primary-2 font-light ">
+              ( {guestUser.userName} )
+            </p>
+          </div>
+        )}
       </div>
       <ChatFooter
         onSubmit={handleSendMessages}

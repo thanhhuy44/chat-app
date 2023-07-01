@@ -1,8 +1,8 @@
-import User from "../model/user.js";
-import Conversation from "../model/conversation.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
+import User from '../model/user.js';
+import Conversation from '../model/conversation.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
 const handleLogin = async (data) => {
   const { userName, password } = data;
@@ -10,7 +10,7 @@ const handleLogin = async (data) => {
   if (!userName || !password) {
     return {
       errCode: 1,
-      message: "form error!",
+      message: 'form error!',
     };
   } else {
     const response = await User.findOne({
@@ -19,7 +19,7 @@ const handleLogin = async (data) => {
       if (error) {
         return {
           errCode: 1,
-          message: "error",
+          message: 'error',
           data: error,
         };
       } else {
@@ -27,24 +27,24 @@ const handleLogin = async (data) => {
           const same = await bcrypt.compare(password, result.password);
           if (same) {
             let token = jwt.sign({ result }, process.env.TOKEN_SECRET, {
-              expiresIn: "1h",
+              expiresIn: '1h',
             });
             return {
               errCode: 0,
-              message: "success!",
+              message: 'success!',
               data: result,
               token,
             };
           } else {
             return {
               errCode: 1,
-              message: "wrong password!",
+              message: 'wrong password!',
             };
           }
         } else {
           return {
             errCode: 1,
-            message: "user not found!",
+            message: 'user not found!',
           };
         }
       }
@@ -65,7 +65,7 @@ const handleReagister = async (data) => {
   ) {
     return {
       errCode: 1,
-      message: "form error!",
+      message: 'form error!',
     };
   } else {
     const response = await User.findOne({
@@ -74,27 +74,27 @@ const handleReagister = async (data) => {
       if (error) {
         return {
           errCode: 1,
-          message: "error",
+          message: 'error',
           data: error,
         };
       } else {
         if (result) {
           return {
             errCode: 1,
-            message: "user already exist!",
+            message: 'user already exist!',
           };
         } else {
           const newUser = await User.create(data).then((result, error) => {
             if (result) {
               return {
                 errCode: 0,
-                message: "success!",
+                message: 'success!',
                 data: result,
               };
             } else {
               return {
                 errCode: 1,
-                message: "error!",
+                message: 'error!',
                 data: error,
               };
             }
@@ -113,12 +113,12 @@ const handleChangeUserStatus = async (id, status) => {
   }).then((result, error) => {
     if (result) {
       return {
-        type: "success",
+        type: 'success',
         data: result,
       };
     } else {
       return {
-        type: "error",
+        type: 'error',
         data: error,
       };
     }
@@ -130,7 +130,7 @@ const handleGetAll = async (page = 1, pageSize = 50, userId) => {
   if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
     return {
       errCode: 1,
-      message: "form error!",
+      message: 'form error!',
     };
   } else {
     const response = await User.find({
@@ -142,13 +142,13 @@ const handleGetAll = async (page = 1, pageSize = 50, userId) => {
         if (result) {
           return {
             errCode: 0,
-            message: "success!",
+            message: 'success!',
             data: result,
           };
         } else {
           return {
             errCode: 1,
-            message: "error",
+            message: 'error',
             data: error,
           };
         }
@@ -166,7 +166,7 @@ const handleGetUser = async (userId, guestId) => {
   ) {
     return {
       errCode: 1,
-      message: "form error!",
+      message: 'form error!',
     };
   } else {
     const response = await User.findById({
@@ -175,25 +175,25 @@ const handleGetUser = async (userId, guestId) => {
       if (error) {
         return {
           errCode: 1,
-          message: "error!",
+          message: 'error!',
           data: error,
         };
       } else {
         if (result) {
-          const conversation = await Conversation.find({
+          const conversation = await Conversation.findOne({
             members: { $all: [userId, guestId] },
           }).then((conversation, error) => {
             if (error) {
               return {
                 errCode: 1,
-                message: "error!",
+                message: 'error!',
                 data: error,
               };
             } else {
               if (conversation) {
                 return {
                   errCode: 0,
-                  message: "success!",
+                  message: 'success!',
                   data: {
                     user: result,
                     conversation: conversation,
@@ -202,7 +202,7 @@ const handleGetUser = async (userId, guestId) => {
               } else {
                 return {
                   errCode: 0,
-                  message: "success!",
+                  message: 'success!',
                   data: {
                     user: result,
                     conversation: null,
@@ -216,7 +216,7 @@ const handleGetUser = async (userId, guestId) => {
         } else {
           return {
             errCode: 1,
-            message: "user not found!",
+            message: 'user not found!',
             data: null,
           };
         }

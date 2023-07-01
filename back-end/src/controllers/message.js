@@ -1,10 +1,15 @@
-import Conversation from "../model/conversation.js";
-import Message from "../model/message.js";
-import mongoose from "mongoose";
-import MessageServices from "../services/message.js";
+import Conversation from '../model/conversation.js';
+import Message from '../model/message.js';
+import mongoose from 'mongoose';
+import MessageServices from '../services/message.js';
 
 const send = async (req, res) => {
   const data = await MessageServices.handleSendMessage(req.body);
+  return res.status(200).json(data);
+};
+
+const sendNew = async (req, res) => {
+  const data = await MessageServices.handleSendMessageNew(req.body);
   return res.status(200).json(data);
 };
 
@@ -24,13 +29,13 @@ const getAllMessages = async (req, res) => {
     if (result) {
       return res.status(200).json({
         errCode: 0,
-        message: "Successfully!",
+        message: 'Successfully!',
         data: result,
       });
     } else {
       return res.status(400).json({
         errCode: 1,
-        message: "Error!",
+        message: 'Error!',
         data: error,
       });
     }
@@ -39,6 +44,7 @@ const getAllMessages = async (req, res) => {
 
 const MessagesControllers = {
   send,
+  sendNew,
   seen,
   getAllMessages,
 };
