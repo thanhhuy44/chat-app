@@ -82,6 +82,8 @@ const userApi = {
       };
     }
   },
+
+  renewToken: async () => {},
 };
 
 export default userApi;

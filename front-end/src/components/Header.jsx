@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Logo from '../assets/images/logo.png';
 import { SignOut } from '@phosphor-icons/react';
@@ -6,12 +6,16 @@ import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { setLogIn, setAuthInfo } from '../redux/features/chatSlice';
 import socket from '../socket';
+import { useEffect } from 'react';
+import jwt from 'jwt-decode';
 
 function Header() {
+  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.chat.isLogin);
   const user = useSelector((state) => state.chat.authInfo);
+  const token = Cookies.get('token');
 
   const handleLogout = async () => {
     navigate('/login');
@@ -22,6 +26,13 @@ function Header() {
     dispatch(setLogIn(false));
     Cookies.remove('token');
   };
+
+  useEffect(() => {
+    if (isLogin) {
+      const decodedToken = jwt(token);
+      console.log(decodedToken.exp);
+    }
+  }, [location.pathname]);
 
   return (
     <div className="flex items-center justify-between w-full px-8 py-2 bg-primary-5">

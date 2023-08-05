@@ -20,6 +20,8 @@ const routes = (app) => {
     UserControllers.getUser
   );
 
+  router.post('/users/renew-token', UserControllers.renewToken);
+
   //Conversations
   router.post(
     '/conversations/create',

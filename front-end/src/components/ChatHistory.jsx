@@ -43,6 +43,7 @@ function ChatHistory() {
         }
       }
     });
+
     return () => {
       socket.off('updated-conversations');
     };

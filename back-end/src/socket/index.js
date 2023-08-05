@@ -34,8 +34,8 @@ const socket = (server) => {
       if (message) {
         await ConversationServices.handleUpdateConversation(message.data);
       }
-      socket.emit('received_message', message);
-      socket.emit('updated-conversations');
+      io.to(data.conversation).emit('received_message', message);
+      io.to(data.conversation).emit('updated-conversations');
     });
 
     socket.on('send-message-new', async (data) => {

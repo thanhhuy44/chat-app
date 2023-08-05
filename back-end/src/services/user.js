@@ -226,12 +226,44 @@ const handleGetUser = async (userId, guestId) => {
   }
 };
 
+const handleRenewToken = async (id) => {
+  const response = await User.findById(id).then((result, error) => {
+    if (error) {
+      return {
+        errCode: 1,
+        message: 'error!',
+        data: error,
+      };
+    } else {
+      if (result) {
+        let token = jwt.sign({ result }, process.env.TOKEN_SECRET, {
+          expiresIn: '1h',
+        });
+        return {
+          errCode: 0,
+          message: 'success!',
+          data: result,
+          token: token,
+        };
+      } else {
+        return {
+          errCode: 1,
+          message: 'user not found!',
+        };
+      }
+    }
+  });
+
+  return response;
+};
+
 const UserServices = {
   handleChangeUserStatus,
   handleLogin,
   handleReagister,
   handleGetAll,
   handleGetUser,
+  handleRenewToken,
 };
 
 export default UserServices;
