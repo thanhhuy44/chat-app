@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { CircleNotch, User } from '@phosphor-icons/react';
-import { useSelector } from 'react-redux';
-import ChatFooter from '../components/ChatFooter';
-import userApi from '../api/user';
-import socket from '../socket';
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { CircleNotch, User } from "@phosphor-icons/react";
+import { useSelector } from "react-redux";
+import ChatFooter from "../components/ChatFooter";
+import userApi from "../api/user";
+import socket from "../socket";
 
 function Chat() {
   const user = useSelector((state) => state.chat.authInfo);
@@ -13,13 +13,13 @@ function Chat() {
   const navigate = useNavigate();
   const [guestUser, setGuestUser] = useState();
   const [loading, setLoading] = useState(true);
-  const [messageText, setMessageText] = useState('');
+  const [messageText, setMessageText] = useState("");
 
   const handleGetData = async () => {
     const response = await userApi.getDetail(location.state.guestId);
-    if (response.data.errCode === 1) {
-      toast.error('Error!');
-      navigate('/');
+    if (response.data.errCode === 1 || response.type === "error") {
+      toast.error("Error!");
+      navigate("/");
     } else {
       if (response.data?.data?.conversation) {
         let conversationId = response.data?.data?.conversation?._id;
@@ -42,27 +42,27 @@ function Chat() {
       sender: user._id,
       receiver: receiver,
     };
-    socket.emit('send-message-new', form);
+    socket.emit("send-message-new", form);
   };
 
   useEffect(() => {
     handleGetData();
-    socket.on('update-message-new', (message) => {
+    socket.on("update-message-new", (message) => {
       if (message.errCode === 0) {
         navigate(`/conversations/${message?.data?.conversation}`, {
           state: {
             id: message?.data?.conversation,
           },
         });
-        setMessageText('');
+        setMessageText("");
       } else {
-        toast.error('Something went wrong, please try again later!');
+        toast.error("Something went wrong, please try again later!");
       }
     });
     return () => {
       setGuestUser(null);
       setLoading(true);
-      socket.off('update-message-new');
+      socket.off("update-message-new");
     };
   }, [location.state]);
 

@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import ContactItem from './ContactItem';
-import conversationApi from '../api/conversation';
-import { toast } from 'react-toastify';
-import { CircleNotch } from '@phosphor-icons/react';
-import socket from '../socket';
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import ContactItem from "./ContactItem";
+import conversationApi from "../api/conversation";
+import { toast } from "react-toastify";
+import { CircleNotch } from "@phosphor-icons/react";
+import socket from "../socket";
 
 function ChatHistory() {
   const isLogin = useSelector((state) => state.chat.isLogin);
@@ -14,38 +14,38 @@ function ChatHistory() {
 
   const getConversations = async () => {
     const response = await conversationApi.getall();
-    if (response.type === 'success') {
+    if (response.type === "success") {
       if (response.data?.errCode === 0) {
         setConversations(response.data?.data);
+        socket.emit("join-rooms", response.data?.data);
       } else {
-        toast.error('Something went wrong, please try again later!');
+        toast.error("Something went wrong, please try again later!");
       }
     } else {
-      toast.error('Something went wrong, please try again later!');
+      toast.error("Something went wrong, please try again later!");
     }
     setIsLoading(false);
   };
 
   useEffect(() => {
     getConversations();
-
-    socket.on('updated-conversations', async () => {
+    socket.on("updated-conversations", async () => {
       if (isLogin) {
         const response = await conversationApi.getall(user._id);
-        if (response.type === 'success') {
+        if (response.type === "success") {
           if (response.data?.errCode === 0) {
             setConversations(response.data?.data);
           } else {
-            toast.error('Something went wrong, please try again later!');
+            toast.error("Something went wrong, please try again later!");
           }
         } else {
-          toast.error('Something went wrong, please try again later!');
+          toast.error("Something went wrong, please try again later!");
         }
       }
     });
 
     return () => {
-      socket.off('updated-conversations');
+      socket.off("updated-conversations");
     };
   }, []);
 

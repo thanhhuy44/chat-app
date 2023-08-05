@@ -1,19 +1,19 @@
-import request from '../utils';
+import request from "../utils";
 
 const userApi = {
   login: async (userName, password) => {
     try {
-      const response = await request.post('/users/login', {
+      const response = await request.post("/users/login", {
         userName,
         password,
       });
       return {
-        type: 'success',
+        type: "success",
         data: response,
       };
     } catch (error) {
       return {
-        type: 'error',
+        type: "error",
         data: error,
       };
     }
@@ -28,7 +28,7 @@ const userApi = {
     password
   ) => {
     try {
-      const response = await request.post('/users/register', {
+      const response = await request.post("/users/register", {
         firstName,
         lastName,
         userName,
@@ -37,12 +37,12 @@ const userApi = {
         password,
       });
       return {
-        type: 'success',
+        type: "success",
         data: response,
       };
     } catch (error) {
       return {
-        type: 'error',
+        type: "error",
         data: error,
       };
     }
@@ -54,14 +54,14 @@ const userApi = {
 
   getAll: async (page = 1, pageSize = 50) => {
     try {
-      const response = await request.get('/users');
+      const response = await request.get("/users");
       return {
-        type: 'success',
+        type: "success",
         data: response,
       };
     } catch (error) {
       return {
-        type: 'error',
+        type: "error",
         data: error,
       };
     }
@@ -72,12 +72,12 @@ const userApi = {
     try {
       const response = await request.get(url);
       return {
-        type: 'success',
+        type: "success",
         data: response,
       };
     } catch (error) {
       return {
-        type: 'error',
+        type: "error",
         data: error,
       };
     }

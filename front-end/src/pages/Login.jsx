@@ -28,11 +28,12 @@ function Login() {
     const response = await userApi.login(userName, password);
     if (response.type === "success") {
       if (response.data.errCode === 0) {
+        await socket.connect();
         toast.success("Login successfully!");
         Cookies.set("token", response.data?.token);
         dispatch(setLogIn(true));
         dispatch(setAuthInfo(response.data.data));
-        socket.emit("online", response.data.data?._id);
+        await socket.emit("online", response.data.data?._id);
         navigate("/");
       } else {
         toast.error(response.data?.message);
