@@ -10,7 +10,7 @@ const connectedUsers = {};
 const socket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: ["http://localhost:3000", "http://localhost:3002"],
       methods: ["GET", "POST"],
     },
   });
@@ -19,7 +19,6 @@ const socket = (server) => {
     let userConnectedId = null;
     socket.on("online", async (userId) => {
       userConnectedId = userId;
-      connectedUsers[userConnectedId] = userId;
       await UserServices.handleChangeUserStatus(userId, true);
       socket.emit("updated-conversations");
     });
@@ -72,6 +71,7 @@ const socket = (server) => {
       if (userConnectedId) {
         const user = connectedUsers[userConnectedId];
         if (user) {
+          console.log("🚀 ~ file: index.js:75 ~ socket.on ~ user:", user);
           await UserServices.handleChangeUserStatus(user, false);
           delete connectedUsers[userConnectedId];
         }
