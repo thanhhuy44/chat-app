@@ -44,7 +44,7 @@ function Header() {
       </Link>
       {isLogin ? (
         <div className="flex items-center gap-x-8 text-xl text-primary-1 ">
-          <p>{user.userName}</p>
+          <Link to={"/profile"}>{user.userName}</Link>
           <div
             onClick={handleLogout}
             className="flex items-center px-2 cursor-pointer bg-transparent hover:bg-primary-4 rounded-full hover:text-red-500 duration-200"
