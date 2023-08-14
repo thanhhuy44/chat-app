@@ -1,7 +1,7 @@
-import chatAIServices from "../services/chatAI.js";
+import chatAIServices from "../services/chatGPT.js";
 
 const chatAI = async (req, res) => {
-  const data = await chatAIServices.handleSendChatAI(req.body);
+  const data = await chatAIServices.handleSendChatGPT(req.body);
   return res.status(200).json(data);
 };
 

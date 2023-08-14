@@ -22,6 +22,10 @@ const MessageSchema = new Schema({
     required: true,
     default: Date.now(),
   },
+  answer: {
+    type: String,
+    default: "",
+  },
 });
 
 MessageSchema.pre("save", async function (next) {

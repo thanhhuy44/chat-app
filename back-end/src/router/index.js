@@ -3,7 +3,7 @@ import UserControllers from "../controllers/user.js";
 import authMiddlwares from "../middlewares/auth.js";
 import ConversationControllers from "../controllers/conversation.js";
 import MessagesControllers from "../controllers/message.js";
-import chatAIControllers from "../controllers/chatAI.js";
+import chatAIControllers from "../controllers/chatGPT.js";
 import chatBardControllers from "../controllers/chatBard.js";
 import sse from "../controllers/sse.js";
 const router = express.Router();
@@ -69,7 +69,7 @@ const routes = (app) => {
     MessagesControllers.getAllMessages
   );
   //chat AI
-  router.post("/chat-ai", chatAIControllers.chatAI);
+  router.post("/chat-gpt", chatAIControllers.chatAI);
 
   // chat Bard
   router.post("/chat-bard", chatBardControllers.askBard);
