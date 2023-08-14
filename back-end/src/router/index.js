@@ -5,6 +5,7 @@ import ConversationControllers from "../controllers/conversation.js";
 import MessagesControllers from "../controllers/message.js";
 import chatAIControllers from "../controllers/chatAI.js";
 import chatBardControllers from "../controllers/chatBard.js";
+import sse from "../controllers/sse.js";
 const router = express.Router();
 
 const routes = (app) => {
@@ -72,6 +73,9 @@ const routes = (app) => {
 
   // chat Bard
   router.post("/chat-bard", chatBardControllers.askBard);
+
+  //sse
+  router.get("/sse", sse);
 
   //another routes
   router.get("*", (req, res) => {
