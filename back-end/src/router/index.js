@@ -4,6 +4,7 @@ import authMiddlwares from "../middlewares/auth.js";
 import ConversationControllers from "../controllers/conversation.js";
 import MessagesControllers from "../controllers/message.js";
 import chatAIControllers from "../controllers/chatAI.js";
+import chatBardControllers from "../controllers/chatBard.js";
 const router = express.Router();
 
 const routes = (app) => {
@@ -68,6 +69,9 @@ const routes = (app) => {
   );
   //chat AI
   router.post("/chat-ai", chatAIControllers.chatAI);
+
+  // chat Bard
+  router.post("/chat-bard", chatBardControllers.askBard);
 
   //another routes
   router.get("*", (req, res) => {
