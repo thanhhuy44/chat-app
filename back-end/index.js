@@ -7,10 +7,20 @@ import routes from "./src/router/index.js";
 import { createServer } from "http";
 import socket from "./src/socket/index.js";
 
+const uri = process.env.DB_URL;
+
 dotenv.config();
-mongoose.connect(process.env.DB_URL, {
-  useNewUrlParser: true,
-});
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(uri, {});
+    console.log("Çonnected to MongoDB");
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
+
 const app = express();
 const server = createServer(app);
 
@@ -33,6 +43,8 @@ app.use(bodyParser.raw());
 app.get("/", (req, res) => {
   return res.send("App is running...");
 });
+
+connectDB();
 
 routes(app);
 
