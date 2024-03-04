@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const request = axios.create({
-  baseURL: "http://localhost:3030/api",
+  baseURL: "https://chat-app-delta-neon.vercel.app/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -19,6 +19,7 @@ request.interceptors.response.use(
     return res.data;
   },
   function (error) {
+    console.error(error);
     return Promise.reject(error);
   }
 );
