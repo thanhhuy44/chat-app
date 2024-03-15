@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import { IResponse } from '../types/interface';
+import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import { IResponse } from "../types/interface";
 
 const verifyJwtToken = (
   token: string,
@@ -21,7 +21,7 @@ export const authenticateToken = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.headers['authorization'];
+  const token = req.headers["authorization"];
 
   if (token) {
     try {
@@ -35,13 +35,15 @@ export const authenticateToken = async (
       console.error(err);
       return res.status(401).json({
         statusCode: 401,
-        message: 'Unauthorized access!',
+        message: "Unauthorized access!",
         data: null,
       } as IResponse);
     }
   } else {
-    return res.status(403).send({
-      message: 'No token provided.',
+    return res.status(403).json({
+      statusCode: 403,
+      message: "No token provided!",
+      data: null,
     });
   }
 };

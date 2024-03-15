@@ -1,4 +1,4 @@
-import { EMessage, TypeRoom } from './enum';
+import { EMessage, TypeRoom } from "./enum";
 
 export interface IResponse {
   statusCode: number;
@@ -17,6 +17,12 @@ export interface ILoginForm {
   password: string;
 }
 
+export interface ILoginSocialForm {
+  email: string;
+  avatar: string;
+  fullName: string;
+}
+
 export interface IUser {
   fullName: string;
   email: string;
@@ -24,7 +30,6 @@ export interface IUser {
   birthday?: string;
   password: string;
   isOnline?: boolean;
-  rooms?: string[];
 }
 
 export interface IBodyGetRoom {
