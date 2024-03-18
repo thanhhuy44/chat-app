@@ -14,9 +14,10 @@ const AppRouter = (app: Application) => {
   router.post("/auth/login-github", UserControllers.loginGithub);
 
   //user
-  router.delete("/user/:id", UserControllers.deleteUser);
+  router.get("/users", authenticateToken, UserControllers.getAll);
+  router.delete("/users/:id", UserControllers.deleteUser);
   // room
-  router.post("/rooms", RoomControllers.get);
+  router.post("/rooms", authenticateToken, RoomControllers.get);
 
   // message
   router.post("/messages/:roomId", MessageControllers.send);

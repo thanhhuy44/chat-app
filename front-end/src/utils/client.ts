@@ -1,5 +1,8 @@
 interface CustomFetchOptions {
   method?: string;
+  data?: any;
+  headers?: any;
+  auth?: string;
 }
 
 type CustomFetchFunction = (
@@ -14,6 +17,7 @@ function createCustomFetch(
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: options.auth || "",
     },
   };
 

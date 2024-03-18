@@ -11,6 +11,14 @@ const nextConfig = {
     NEXTAUTH_SECRET:
       "d53b46c5379c720844988f6355a4e0a306399096521aaea8aa92166f495275b623e3a90d4a3bc0df30216956f44e7f48a4bcfca04479d8b6d18e8ef80a5027d1",
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

@@ -58,6 +58,9 @@ devDependencies:
   '@types/mongoose':
     specifier: ^5.11.97
     version: 5.11.97
+  jose:
+    specifier: ^5.2.3
+    version: 5.2.3
   nodemon:
     specifier: ^3.0.3
     version: 3.1.0
@@ -799,6 +802,10 @@ packages:
   /is-number@7.0.0:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
+    dev: true
+
+  /jose@5.2.3:
+    resolution: {integrity: sha512-KUXdbctm1uHVL8BYhnyHkgp3zDX5KW8ZhAKVFEfUbU2P8Alpzjb+48hHvjOdQIyPshoblhzsuqOwEEAbtHVirA==}
     dev: true
 
   /jsonwebtoken@9.0.2:

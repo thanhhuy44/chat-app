@@ -31,7 +31,7 @@ const handleLogin = async (body: ILoginForm): Promise<IResponse> => {
         { _id: user._id },
         process.env.TOKEN_SECRET as string,
         {
-          expiresIn: "1h",
+          expiresIn: "365 days",
         }
       );
       return {
@@ -136,12 +136,22 @@ const handleDeleteUser = async (id: string): Promise<IResponse> => {
   }
 };
 
+const handleGetAll = async (page = 1, pageSize = 50): Promise<IResponse> => {
+  const users = await User.find();
+  return {
+    statusCode: 200,
+    message: "OK!",
+    data: users,
+  };
+};
+
 const UserServices = {
   handleCreateUser,
   handleLogin,
   handleLoginGoogle,
   handleLoginGithub,
   handleDeleteUser,
+  handleGetAll,
 };
 
 export default UserServices;

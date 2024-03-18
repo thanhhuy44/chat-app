@@ -89,12 +89,28 @@ const deleteUser = async (req: Request, res: Response) => {
   return res.status(data.statusCode).json(data);
 };
 
+const getAll = async (req: Request, res: Response) => {
+  const page = parseInt(req.query?.page as string) || 1;
+  const pageSize = parseInt(req.query?.pageSize as string) || 50;
+
+  const data = await UserServices.handleGetAll(page, pageSize);
+  if (data) {
+    return res.status(data.statusCode).json(data);
+  }
+  return res.status(500).json({
+    statusCode: 500,
+    message: "Internal Server Error!",
+    data: null,
+  } as IResponse);
+};
+
 const UserControllers = {
   register,
   login,
   loginGoogle,
   loginGithub,
   deleteUser,
+  getAll,
 };
 
 export default UserControllers;

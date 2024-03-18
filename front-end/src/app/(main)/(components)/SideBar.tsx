@@ -3,6 +3,7 @@
 import { SignOut } from "@phosphor-icons/react";
 import { signOut } from "next-auth/react";
 import React from "react";
+import SideBarTab from "./SideBarTab";
 
 export default function SideBar() {
   return (
@@ -10,7 +11,9 @@ export default function SideBar() {
       <div className="border-b border-gray-300 py-4">
         <h1 className="text-center">App Name</h1>
       </div>
-      <div className="flex-1">list sidebar</div>
+      <div className="flex-1">
+        <SideBarTab />
+      </div>
       <div className="border-t border-gray-300 bg-gray-100">
         <button
           onClick={() =>

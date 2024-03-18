@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Input from "@/components/Input";
 import { CircleNotch, Eye, EyeSlash } from "@phosphor-icons/react/dist/ssr";
 import { useForm } from "react-hook-form";
@@ -8,8 +8,6 @@ import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@/components/Button";
 import { signIn } from "next-auth/react";
-import toast from "react-hot-toast";
-import { useSearchParams } from "next/navigation";
 
 interface FormInputs {
   email: string;
@@ -41,13 +39,14 @@ export default function LoginForm() {
   } = useForm<FormInputs>({
     resolver: zodResolver(FormValidate),
   });
-  const searchParams = useSearchParams();
-  const error = searchParams.get("error");
-  console.log("🚀 ~ LoginForm ~ error:", error);
 
   const handleLogin = async (data: FormInputs) => {
     event?.preventDefault();
-    await signIn("credentials", { ...data, redirect: true, callbackUrl: "/" });
+    await signIn("credentials", {
+      ...data,
+      redirect: true,
+      callbackUrl: "/",
+    });
   };
 
   return (

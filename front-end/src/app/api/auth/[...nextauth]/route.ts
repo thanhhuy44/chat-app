@@ -5,6 +5,9 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import createCustomFetch from "@/utils/client";
 import { ApiResponse } from "@/types";
+import { JWT } from "next-auth/jwt";
+import jwt from "jsonwebtoken";
+import { setCookie } from "cookies-next";
 
 export const Options: NextAuthOptions = {
   pages: {
@@ -57,8 +60,12 @@ export const Options: NextAuthOptions = {
           email,
           password,
         });
+
         if (response.statusCode === 200) {
-          return response.data;
+          return {
+            token: response.token,
+            ...response.data,
+          };
         }
         if (response.statusCode === 404) {
           throw new Error("User not found!");
@@ -75,13 +82,25 @@ export const Options: NextAuthOptions = {
   },
   jwt: {
     secret: process.env.NEXTAUTH_SECRET as string,
+    // encode: async ({ secret, token, maxAge }) => {
+    //   const string = await jwt.sign(token?._id as string, secret, {
+    //     algorithm: "HS256",
+    //   });
+    //   return string;
+    // },
+    // decode: async ({ secret, token }) => {
+    //   const decodeed = jwt.verify(token!, secret, {
+    //     algorithms: ["HS256"],
+    //   }) as JWT;
+    //   return decodeed;
+    // },
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.user = user as User;
+        token._id = user._id as string;
+        token.user = user;
       }
-
       return token;
     },
     async session({ token, session }) {
