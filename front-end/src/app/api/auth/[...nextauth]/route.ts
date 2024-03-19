@@ -20,7 +20,7 @@ export const Options: NextAuthOptions = {
       clientSecret: process.env.GITHUB_SECRET as string,
       profile: async (profile, tokens) => {
         console.log("🚀 ~ profile: ~ profile:", profile);
-        const fetch = createCustomFetch({
+        const fetch = await createCustomFetch({
           method: "POST",
         });
         const response: ApiResponse = await fetch("/auth/login-github", {
@@ -49,7 +49,7 @@ export const Options: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const fetch = createCustomFetch({
+        const fetch = await createCustomFetch({
           method: "POST",
         });
         const { email, password } = credentials as {
@@ -79,6 +79,7 @@ export const Options: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
+    // maxAge: 120,
   },
   jwt: {
     secret: process.env.NEXTAUTH_SECRET as string,

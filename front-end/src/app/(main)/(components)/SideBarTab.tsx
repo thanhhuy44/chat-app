@@ -23,10 +23,8 @@ export default function SidebarTab() {
         </button>
       </div>
       <div className="relative flex-1">
-        <div className="absolute bottom-0 left-0 right-0 top-0 overflow-y-auto">
-          {tabActive === "chat" ? <ChatHistory /> : null}
-          {tabActive === "user" ? <ListUser /> : null}
-        </div>
+        {tabActive === "chat" ? <ChatHistory /> : null}
+        {tabActive === "user" ? <ListUser /> : null}
       </div>
     </div>
   );

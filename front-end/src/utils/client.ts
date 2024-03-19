@@ -1,8 +1,9 @@
+import { getSession } from "next-auth/react";
+
 interface CustomFetchOptions {
   method?: string;
   data?: any;
   headers?: any;
-  auth?: string;
 }
 
 type CustomFetchFunction = (
@@ -10,14 +11,15 @@ type CustomFetchFunction = (
   data?: Record<string, any>,
 ) => Promise<any>;
 
-function createCustomFetch(
+async function createCustomFetch(
   options: CustomFetchOptions = {},
-): CustomFetchFunction {
+): Promise<CustomFetchFunction> {
+  const session = await getSession();
   const defaultOptions: RequestInit = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: options.auth || "",
+      Authorization: session?.user.token || "",
     },
   };
 

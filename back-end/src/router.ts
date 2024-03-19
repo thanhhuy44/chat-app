@@ -17,6 +17,7 @@ const AppRouter = (app: Application) => {
   router.get("/users", authenticateToken, UserControllers.getAll);
   router.delete("/users/:id", UserControllers.deleteUser);
   // room
+  router.get("/rooms", authenticateToken, RoomControllers.getAll);
   router.post("/rooms", authenticateToken, RoomControllers.get);
 
   // message

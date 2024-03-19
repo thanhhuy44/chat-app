@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Room from "../models/room";
 import { IBodyGetRoom, IResponse } from "../types/interface";
 
@@ -30,8 +31,47 @@ const handleGetRoom = async (body: IBodyGetRoom): Promise<IResponse> => {
   }
 };
 
+const handleGetAll = async (
+  userId?: string,
+  page = 1,
+  pageSize = 50
+): Promise<IResponse> => {
+  if (!userId) {
+    return {
+      statusCode: 400,
+      message: "Bad Request: Missing User ID!",
+      data: null,
+    };
+  }
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return {
+      statusCode: 400,
+      message: "Bad Request: Invalid User ID!",
+      data: null,
+    };
+  }
+  const rooms = await Room.find({
+    members: userId,
+  })
+    .sort("-updatedAt")
+    .skip((page - 1) * pageSize)
+    .limit(pageSize);
+  const total = await Room.countDocuments();
+  return {
+    statusCode: 200,
+    message: "OK!",
+    data: rooms,
+    pagination: {
+      page,
+      pageSize,
+      totalPage: Math.ceil(total / pageSize),
+    },
+  };
+};
+
 const RoomServices = {
   handleGetRoom,
+  handleGetAll,
 };
 
 export default RoomServices;

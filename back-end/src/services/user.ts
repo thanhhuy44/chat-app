@@ -137,11 +137,20 @@ const handleDeleteUser = async (id: string): Promise<IResponse> => {
 };
 
 const handleGetAll = async (page = 1, pageSize = 50): Promise<IResponse> => {
-  const users = await User.find();
+  const users = await User.find()
+    .sort("-isOnline")
+    .skip((page - 1) * pageSize)
+    .limit(pageSize);
+  const total = await User.countDocuments();
   return {
     statusCode: 200,
     message: "OK!",
     data: users,
+    pagination: {
+      page,
+      pageSize,
+      totalPage: Math.ceil(total / pageSize),
+    },
   };
 };
 
