@@ -1,14 +1,17 @@
 "use client";
 
 import Scrollable from "@/components/Scrollable";
+import { Room, User } from "@/types";
 import createCustomFetch from "@/utils/client";
 import { CircleNotch } from "@phosphor-icons/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React, { Fragment, useState } from "react";
+import Link from "next/link";
+import React, { Fragment } from "react";
 
 export default function ChatHistory() {
-  const [loading, setLoading] = useState<boolean>(true);
+  const session = useSession();
 
   const getRooms = async () => {
     const customfetch = await createCustomFetch({
@@ -50,28 +53,34 @@ export default function ChatHistory() {
       {data?.pages[0].data.length ? (
         data?.pages.map((group, i) => (
           <Fragment key={i}>
-            {group?.data.map((user: any) => (
-              <div
-                key={user._id}
-                className="flex cursor-pointer select-none items-center gap-x-2 px-3 py-2 duration-150 hover:bg-gray-200 active:bg-gray-300"
-              >
-                <div className="relative h-10 w-10">
-                  <Image
-                    src={user.avatar}
-                    alt={user.avatar}
-                    width={40}
-                    height={40}
-                    className="aspect-square rounded-full object-cover object-center"
-                  />
-                  {user.isOnline ? (
-                    <div className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-white bg-green-500"></div>
-                  ) : null}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold">{user.fullName}</p>
-                </div>
-              </div>
-            ))}
+            {group?.data.map((room: Room) => {
+              const user = room.members?.find(
+                (e) => e._id !== session.data?.user._id,
+              ) as User;
+              return user ? (
+                <Link
+                  href={`/${room._id}`}
+                  key={user._id}
+                  className="flex cursor-pointer select-none items-center gap-x-2 px-3 py-2 duration-150 hover:bg-gray-200 active:bg-gray-300"
+                >
+                  <div className="relative h-10 w-10">
+                    <Image
+                      src={user.avatar}
+                      alt={user.avatar}
+                      width={40}
+                      height={40}
+                      className="aspect-square rounded-full object-cover object-center"
+                    />
+                    {user.isOnline ? (
+                      <div className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-white bg-green-500"></div>
+                    ) : null}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">{user.fullName}</p>
+                  </div>
+                </Link>
+              ) : null;
+            })}
           </Fragment>
         ))
       ) : (

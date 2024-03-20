@@ -1,9 +1,17 @@
 import mongoose from "mongoose";
 import Room from "../models/room";
 import { IBodyGetRoom, IResponse } from "../types/interface";
+import { TypeRoom } from "../types/enum";
 
-const handleGetRoom = async (body: IBodyGetRoom): Promise<IResponse> => {
-  const room = await Room.findOne(body);
+const handleGetRoom = async (
+  userId: string,
+  guestId: string,
+  type: TypeRoom
+): Promise<IResponse> => {
+  const room = await Room.findOne({
+    members: [userId, guestId],
+    type,
+  });
   if (room) {
     return {
       statusCode: 200,
@@ -12,7 +20,8 @@ const handleGetRoom = async (body: IBodyGetRoom): Promise<IResponse> => {
     };
   } else {
     const newRoom = await Room.create({
-      ...body,
+      members: [userId, guestId],
+      type: TypeRoom.Single,
       createdAt: Date.now(),
     });
     if (newRoom) {
@@ -52,7 +61,10 @@ const handleGetAll = async (
   }
   const rooms = await Room.find({
     members: userId,
+    lastMessage: { $ne: null },
   })
+    .populate("lastMessage")
+    .populate("members")
     .sort("-updatedAt")
     .skip((page - 1) * pageSize)
     .limit(pageSize);
@@ -69,9 +81,17 @@ const handleGetAll = async (
   };
 };
 
+const handleGetInfo = async (id: string) => {
+  const info = await Room.findById(id, {
+    lastMessage: 0,
+  }).populate("members");
+  return info;
+};
+
 const RoomServices = {
   handleGetRoom,
   handleGetAll,
+  handleGetInfo,
 };
 
 export default RoomServices;

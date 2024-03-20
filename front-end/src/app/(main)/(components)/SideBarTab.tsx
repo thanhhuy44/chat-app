@@ -5,7 +5,7 @@ import ChatHistory from "./ChatHistory";
 import ListUser from "./ListUser";
 
 export default function SidebarTab() {
-  const [tabActive, setTabActive] = useState<"chat" | "user">("user");
+  const [tabActive, setTabActive] = useState<"chat" | "user">("chat");
   return (
     <div className="flex h-full flex-col">
       <div className="grid grid-cols-2">

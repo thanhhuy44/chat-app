@@ -1,3 +1,5 @@
+import { EMessage } from "./enum";
+
 export type ApiResponse = {
   statusCode: number;
   message: string;
@@ -10,4 +12,20 @@ export type User = {
   fullName: string;
   avatar: string;
   isOnline: boolean;
+};
+
+export type Room = {
+  _id: string;
+  members: Array<User>;
+  lastMessage?: any;
+  updatedAt: string;
+  createdAt: string;
+};
+
+export type Message = {
+  _id: string;
+  sender: User;
+  seenBy: string[];
+  text?: string;
+  type: EMessage;
 };

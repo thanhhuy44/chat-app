@@ -1,3 +1,4 @@
+import { ApiResponse } from "@/types";
 import { getSession } from "next-auth/react";
 
 interface CustomFetchOptions {
@@ -41,7 +42,7 @@ async function createCustomFetch(
         (process.env.API_BASE_URL as string) + path,
         fetchOptions,
       );
-      return await response.json();
+      return (await response.json()) as ApiResponse;
     } catch (error) {
       console.error("Fetch error:", error);
       throw error;

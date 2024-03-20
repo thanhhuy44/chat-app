@@ -38,7 +38,6 @@ export interface IBodyGetRoom {
 }
 
 export interface IBodySendMessage {
-  sender: string;
   type: EMessage;
   room: string;
   text?: string;

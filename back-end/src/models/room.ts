@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import { TypeRoom } from '../types/enum';
+import mongoose from "mongoose";
+import { TypeRoom } from "../types/enum";
 const Schema = mongoose.Schema;
 const RoomSchema = new Schema({
   name: {
@@ -9,19 +9,12 @@ const RoomSchema = new Schema({
   members: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
-  ],
-  messages: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Message',
-      select: false,
+      ref: "User",
     },
   ],
   lastMessage: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Message',
+    ref: "Message",
   },
   type: {
     type: String,
@@ -41,5 +34,5 @@ const RoomSchema = new Schema({
   },
 });
 
-const Room = mongoose.model('Room', RoomSchema);
+const Room = mongoose.model("Room", RoomSchema);
 export default Room;

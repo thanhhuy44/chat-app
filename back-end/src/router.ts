@@ -17,11 +17,13 @@ const AppRouter = (app: Application) => {
   router.get("/users", authenticateToken, UserControllers.getAll);
   router.delete("/users/:id", UserControllers.deleteUser);
   // room
-  router.get("/rooms", authenticateToken, RoomControllers.getAll);
   router.post("/rooms", authenticateToken, RoomControllers.get);
+  router.get("/rooms", authenticateToken, RoomControllers.getAll);
+  router.get("/rooms/info/:id", authenticateToken, RoomControllers.getInfo);
 
   // message
-  router.post("/messages/:roomId", MessageControllers.send);
+  router.post("/messages/:roomId", authenticateToken, MessageControllers.send);
+  router.get("/messages/:roomId", authenticateToken, MessageControllers.getAll);
 
   router.get("*", (_, res) => {
     return res.status(404).json({

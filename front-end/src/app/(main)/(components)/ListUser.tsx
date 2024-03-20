@@ -3,12 +3,16 @@
 import React, { Fragment } from "react";
 import createCustomFetch from "@/utils/client";
 import { CircleNotch } from "@phosphor-icons/react";
-import { User } from "@/types";
+import { ApiResponse, User } from "@/types";
 import Image from "next/image";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Scrollable from "@/components/Scrollable";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function ListUser() {
+  const router = useRouter();
+
   const getUsers = async ({ pageParam }: { pageParam: number }) => {
     const customfetch = await createCustomFetch({
       method: "GET",
@@ -34,6 +38,23 @@ export default function ListUser() {
     },
   });
 
+  const onClick = async (guestId: string) => {
+    const fetch = await createCustomFetch({
+      method: "POST",
+    });
+    const response: ApiResponse = await fetch("/rooms", {
+      guestId,
+      type: "SINGLE",
+    });
+    if ([200, 201].includes(response.statusCode)) {
+      router.push(`/${response.data._id}`);
+    } else {
+      toast(response.message || "Something went wrong!", {
+        icon: "❌",
+      });
+    }
+  };
+
   return isFetching ? (
     <div className="flex h-full items-center justify-center">
       <CircleNotch className="animate-spin" size={24} />
@@ -52,6 +73,7 @@ export default function ListUser() {
             <div
               key={user._id}
               className="flex cursor-pointer select-none items-center gap-x-2 px-3 py-2 duration-150 hover:bg-gray-200 active:bg-gray-300"
+              onClick={() => onClick(user._id)}
             >
               <div className="relative h-10 w-10">
                 <Image

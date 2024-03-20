@@ -22,7 +22,7 @@ export default function RootLayout({
         <AuthProvider>
           <div className="flex h-screen w-screen items-stretch overflow-hidden">
             <SideBar />
-            <div className="container flex-1">{children}</div>
+            <div className="flex-1">{children}</div>
           </div>
         </AuthProvider>
         <Toast />
