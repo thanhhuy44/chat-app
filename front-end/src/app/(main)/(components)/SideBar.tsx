@@ -4,6 +4,7 @@ import { SignOut } from "@phosphor-icons/react";
 import { signOut } from "next-auth/react";
 import React from "react";
 import SideBarTab from "./SideBarTab";
+import socket from "@/utils/socket";
 
 export default function SideBar() {
   return (
@@ -16,12 +17,16 @@ export default function SideBar() {
       </div>
       <div className="border-t border-gray-300 bg-gray-100">
         <button
-          onClick={() =>
+          onClick={() => {
+            if (socket.connected) {
+              socket.emit("logout");
+              socket.disconnect();
+            }
             signOut({
               redirect: true,
               callbackUrl: "/login",
-            })
-          }
+            });
+          }}
           className="flex w-full items-center justify-center gap-x-3 py-4"
         >
           <SignOut />

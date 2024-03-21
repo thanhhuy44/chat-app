@@ -154,6 +154,27 @@ const handleGetAll = async (page = 1, pageSize = 50): Promise<IResponse> => {
   };
 };
 
+const handleChangeUserStatus = async (
+  userId: string,
+  status: boolean
+): Promise<IResponse> => {
+  const updatedUser = await User.findByIdAndUpdate(userId, {
+    isOnline: status,
+  });
+  if (updatedUser) {
+    return {
+      statusCode: 200,
+      message: "OK!",
+      data: updatedUser,
+    };
+  }
+  return {
+    statusCode: 500,
+    message: "Intenal Server Error!",
+    data: null,
+  };
+};
+
 const UserServices = {
   handleCreateUser,
   handleLogin,
@@ -161,6 +182,7 @@ const UserServices = {
   handleLoginGithub,
   handleDeleteUser,
   handleGetAll,
+  handleChangeUserStatus,
 };
 
 export default UserServices;

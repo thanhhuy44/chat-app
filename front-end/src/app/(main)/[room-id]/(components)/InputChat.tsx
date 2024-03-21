@@ -5,9 +5,10 @@ import React, { useState } from "react";
 
 interface Props {
   onSend?: (message: string) => void;
+  disable?: boolean;
 }
 
-export default function InputChat({ onSend }: Props) {
+export default function InputChat({ onSend, disable }: Props) {
   const [value, setValue] = useState<string>("");
 
   const onFinish = () => {
@@ -19,6 +20,7 @@ export default function InputChat({ onSend }: Props) {
     <div className="border-t border-gray-300 py-4">
       <div className="mx-auto flex w-full max-w-5xl items-center rounded-full bg-gray-100 p-2 px-4">
         <input
+          disabled={disable}
           size={1}
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -31,7 +33,7 @@ export default function InputChat({ onSend }: Props) {
             }
           }}
         />
-        <button onClick={onFinish}>
+        <button disabled={disable} onClick={onFinish}>
           <PaperPlaneRight weight="fill" />
         </button>
       </div>

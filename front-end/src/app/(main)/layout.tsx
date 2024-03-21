@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import AuthProvider from "@/components/AuthProvider";
 import Toast from "@/components/Toast";
 import SideBar from "./(components)/SideBar";
+import SocketClient from "@/components/SocketClient";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +21,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className}`}>
         <AuthProvider>
-          <div className="flex h-screen w-screen items-stretch overflow-hidden">
-            <SideBar />
-            <div className="flex-1">{children}</div>
-          </div>
+          <SocketClient>
+            <div className="flex h-screen w-screen items-stretch overflow-hidden">
+              <SideBar />
+              <div className="flex-1">{children}</div>
+            </div>
+          </SocketClient>
         </AuthProvider>
         <Toast />
       </body>

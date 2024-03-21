@@ -1,4 +1,5 @@
 import Message from "../models/message";
+import Room from "../models/room";
 import { IBodySendMessage, IResponse } from "../types/interface";
 
 const handleSendMessage = async (
@@ -10,8 +11,13 @@ const handleSendMessage = async (
     sender: sender,
     seenBy: [sender],
     createdAt: Date.now(),
-  });
+  }).then((result) => result.populate("sender"));
+
   if (message) {
+    await Room.findByIdAndUpdate(body.room, {
+      updatedAt: Date.now(),
+      lastMessage: message._id,
+    });
     return {
       statusCode: 201,
       message: "OK!",

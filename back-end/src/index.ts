@@ -4,9 +4,14 @@ import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
 import AppRouter from "./router";
+import { createServer } from "http";
+import socket from "./listeners";
 
-const app: Application = Express();
 dotenv.config();
+const app: Application = Express();
+const server = createServer(app);
+
+socket(server);
 
 app.use(
   cors({
@@ -22,7 +27,7 @@ mongoose.connect(process.env.DB_URL as string);
 
 AppRouter(app);
 
-app.listen(4040, () => {
+server.listen(4040, () => {
   console.log("Server start at port 4040");
   console.log("URL: http://localhost:4040");
 });
