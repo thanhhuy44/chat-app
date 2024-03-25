@@ -90,10 +90,15 @@ const deleteUser = async (req: Request, res: Response) => {
 };
 
 const getAll = async (req: Request, res: Response) => {
+  const userId = req.user;
   const page = parseInt(req.query?.page as string) || 1;
   const pageSize = parseInt(req.query?.pageSize as string) || 50;
 
-  const data = await UserServices.handleGetAll(page, pageSize);
+  const data = await UserServices.handleGetAll(
+    page,
+    pageSize,
+    userId as string
+  );
   if (data) {
     return res.status(data.statusCode).json(data);
   }

@@ -62,6 +62,8 @@ export default function ChatContainer({ roomId }: { roomId: string }) {
     },
   });
 
+  const handleSendNotification = (message: Message) => {};
+
   useEffect(() => {
     data?.pages.forEach((page) => {
       setMessages((prev) => [...prev, ...page.data]);
@@ -73,13 +75,12 @@ export default function ChatContainer({ roomId }: { roomId: string }) {
       socket.emit("join-room", roomId); //join room
 
       //on new message in room coming (not my message)
-      socket.on("received-message", (message) => {
+      socket.on("received-message", (message: Message) => {
         // console.log("🚀 ~ socket.on ~ message:", message);
         // if (message.room === roomId) {
         //   setMessages((prev) => [...prev, message]);
         // }
-
-        setMessages((prev) => [...prev, message]);
+        setMessages((prev) => [message, ...prev]);
       });
     }
 

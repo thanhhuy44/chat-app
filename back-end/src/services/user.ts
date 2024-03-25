@@ -136,8 +136,16 @@ const handleDeleteUser = async (id: string): Promise<IResponse> => {
   }
 };
 
-const handleGetAll = async (page = 1, pageSize = 50): Promise<IResponse> => {
-  const users = await User.find()
+const handleGetAll = async (
+  page = 1,
+  pageSize = 50,
+  userId: string
+): Promise<IResponse> => {
+  const users = await User.find({
+    _id: {
+      $ne: userId,
+    },
+  })
     .sort("-isOnline")
     .skip((page - 1) * pageSize)
     .limit(pageSize);

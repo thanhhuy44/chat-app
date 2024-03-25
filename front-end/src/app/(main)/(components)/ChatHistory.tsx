@@ -1,5 +1,6 @@
 "use client";
 
+import React, { Fragment } from "react";
 import Scrollable from "@/components/Scrollable";
 import { Room, User } from "@/types";
 import createCustomFetch from "@/utils/client";
@@ -8,7 +9,10 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { Fragment } from "react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import socket from "@/utils/socket";
+dayjs.extend(relativeTime);
 
 export default function ChatHistory() {
   const session = useSession();
@@ -57,6 +61,9 @@ export default function ChatHistory() {
               const user = room.members?.find(
                 (e) => e._id !== session.data?.user._id,
               ) as User;
+              const isRead = room.lastMessage?.seenBy.includes(
+                session.data?.user._id as string,
+              );
               return user ? (
                 <Link
                   href={`/${room._id}`}
@@ -75,8 +82,29 @@ export default function ChatHistory() {
                       <div className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-white bg-green-500"></div>
                     ) : null}
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold">{user.fullName}</p>
+                  <div className="flex flex-1 flex-col gap-y-1">
+                    <div className="flex items-center gap-x-2">
+                      <p className="line-clamp-1 flex-1 text-sm font-semibold">
+                        {user.fullName}
+                      </p>
+                      <p className="text-xs font-light">
+                        {dayjs(room.updatedAt).fromNow()}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <p
+                        className={`line-clamp-1 flex-1 text-xs ${!isRead ? "font-semibold" : ""}`}
+                      >
+                        {(room.lastMessage?.sender as string) ===
+                        session.data?.user._id
+                          ? "You: "
+                          : null}
+                        {room.lastMessage?.text}
+                      </p>
+                      {!isRead ? (
+                        <span className="h-2 w-2 rounded-full bg-gray-950"></span>
+                      ) : null}
+                    </div>
                   </div>
                 </Link>
               ) : null;

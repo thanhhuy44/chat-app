@@ -18,10 +18,8 @@ export default function SideBar() {
       <div className="border-t border-gray-300 bg-gray-100">
         <button
           onClick={() => {
-            if (socket.connected) {
-              socket.emit("logout");
-              socket.disconnect();
-            }
+            socket.emit("offline");
+            socket.disconnect();
             signOut({
               redirect: true,
               callbackUrl: "/login",

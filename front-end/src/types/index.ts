@@ -17,14 +17,14 @@ export type User = {
 export type Room = {
   _id: string;
   members: Array<User>;
-  lastMessage?: any;
+  lastMessage?: Message;
   updatedAt: string;
   createdAt: string;
 };
 
 export type Message = {
   _id: string;
-  sender: User;
+  sender: User | string;
   seenBy: string[];
   text?: string;
   type: EMessage;

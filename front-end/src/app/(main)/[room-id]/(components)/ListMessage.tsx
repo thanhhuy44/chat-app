@@ -22,14 +22,16 @@ export default function ListMessage({ messages }: Props) {
   }, [messages]);
 
   return (
-    <div className="mx-auto flex h-full max-w-5xl flex-col justify-end gap-y-2 py-6">
-      {messages.map((message) => (
-        <MessageItem
-          key={message._id}
-          {...message}
-          isSender={data?.user._id === message?.sender?._id}
-        />
-      ))}
+    <div className="mx-auto max-w-5xl py-6">
+      <div className="flex h-full flex-col-reverse justify-end gap-y-2">
+        {messages.map((message, index) => (
+          <MessageItem
+            key={index}
+            {...message}
+            isSender={data?.user._id === message?.sender?._id}
+          />
+        ))}
+      </div>
       <div ref={bottomRef}></div>
     </div>
   );
