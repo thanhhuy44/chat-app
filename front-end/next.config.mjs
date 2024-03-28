@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// import nodeExternals  from 'webpack-node-externals'
 const nextConfig = {
   env: {
     API_BASE_URL: "http://localhost:4040/api",

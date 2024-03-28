@@ -5,6 +5,7 @@ import { ETypeChat } from "@/types/enum";
 import { findGuestUsers } from "@/utils";
 import createCustomFetch from "@/utils/client";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -40,7 +41,24 @@ export default function Header() {
   return (
     <div className="border-b border-gray-300">
       <div className="container">
-        {typeChat === ETypeChat.SINGLE ? (guests as User)?.fullName : ""}
+        <div className="mx-auto flex w-full max-w-5xl items-center gap-x-4 py-2">
+          <div>
+            <Image
+              width={52}
+              height={52}
+              src={typeChat === ETypeChat.SINGLE ? (guests as User).avatar : ""}
+              className="aspect-square rounded-full object-cover object-center"
+              alt={
+                typeChat === ETypeChat.SINGLE ? (guests as User).fullName : ""
+              }
+            />
+          </div>
+          <div className="flex-1">
+            <h1 className="text-lg font-bold">
+              {typeChat === ETypeChat.SINGLE ? (guests as User)?.fullName : ""}
+            </h1>
+          </div>
+        </div>
       </div>
     </div>
   );

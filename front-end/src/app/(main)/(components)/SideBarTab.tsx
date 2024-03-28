@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Chats, Users } from "@phosphor-icons/react/dist/ssr";
 import ChatHistory from "./ChatHistory";
 import ListUser from "./ListUser";
+import QueryProvider from "@/components/QueryProvider";
 
 export default function SidebarTab() {
   const [tabActive, setTabActive] = useState<"chat" | "user">("chat");
@@ -24,8 +25,16 @@ export default function SidebarTab() {
         </button>
       </div>
       <div className="relative flex-1">
-        {tabActive === "chat" ? <ChatHistory /> : null}
-        {tabActive === "user" ? <ListUser /> : null}
+        {tabActive === "chat" ? (
+          <QueryProvider>
+            <ChatHistory />
+          </QueryProvider>
+        ) : null}
+        {tabActive === "user" ? (
+          <QueryProvider>
+            <ListUser />
+          </QueryProvider>
+        ) : null}
       </div>
     </div>
   );

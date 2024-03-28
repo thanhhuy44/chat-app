@@ -1,8 +1,8 @@
 "use client";
 
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import Scrollable from "@/components/Scrollable";
-import { Room, User } from "@/types";
+import { Message, Room, User } from "@/types";
 import createCustomFetch from "@/utils/client";
 import { CircleNotch } from "@phosphor-icons/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -42,6 +42,14 @@ export default function ChatHistory() {
     },
   });
 
+  useEffect(() => {
+    if (socket.connected) {
+      socket.on("received-message", (message: Message) => {
+        console.log("🚀 ~ socket.on ~ message:", message);
+      });
+    }
+  }, []);
+
   return isFetching ? (
     <div className="flex h-full items-center justify-center">
       <CircleNotch className="animate-spin" size={24} />
@@ -57,7 +65,7 @@ export default function ChatHistory() {
       {data?.pages[0].data.length ? (
         data?.pages.map((group, i) => (
           <Fragment key={i}>
-            {group?.data.map((room: Room) => {
+            {group?.data.map((room: Room, index: number) => {
               const user = room.members?.find(
                 (e) => e._id !== session.data?.user._id,
               ) as User;
@@ -67,7 +75,7 @@ export default function ChatHistory() {
               return user ? (
                 <Link
                   href={`/${room._id}`}
-                  key={user._id}
+                  key={index}
                   className="flex cursor-pointer select-none items-center gap-x-2 px-3 py-2 duration-150 hover:bg-gray-200 active:bg-gray-300"
                 >
                   <div className="relative h-10 w-10">
