@@ -14,6 +14,7 @@ const socket = (server) => {
         "http://localhost:3000",
         "http://localhost:3001",
         "http://localhost:3002",
+        "https://chat-app-ofzl.vercel.app",
       ],
       methods: ["GET", "POST"],
     },
